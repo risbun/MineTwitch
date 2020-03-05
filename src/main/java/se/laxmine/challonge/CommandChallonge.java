@@ -21,6 +21,7 @@ public class CommandChallonge implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!Main.enabled) {
+            Main.enabled = true;
             BukkitScheduler scheduler = getServer().getScheduler();
 
             Runnable task3 = () -> {
@@ -34,7 +35,6 @@ public class CommandChallonge implements CommandExecutor {
 
             Runnable task2 = () -> {
                 Bot.send("Starting voting now!");
-                Bukkit.broadcastMessage("Voting time!");
                 Main.votenow = true;
 
                 Main.globalVotes.clear();
@@ -42,20 +42,17 @@ public class CommandChallonge implements CommandExecutor {
                 Main.chosen.clear();
                 Main.chosenActions.clear();
 
-                int i1 = rand.nextInt(Main.chooses.size());
-                int i2 = rand.nextInt(Main.chooses.size());
-                int i3 = rand.nextInt(Main.chooses.size());
-
-                Main.chosen.add(new JSONObject(Main.chooses.get(i1)).getString("name"));
-                Main.chosen.add(new JSONObject(Main.chooses.get(i2)).getString("name"));
-                Main.chosen.add(new JSONObject(Main.chooses.get(i3)).getString("name"));
-                Main.chosenActions.add(new JSONObject(Main.chooses.get(i1)).getString("action"));
-                Main.chosenActions.add(new JSONObject(Main.chooses.get(i2)).getString("action"));
-                Main.chosenActions.add(new JSONObject(Main.chooses.get(i3)).getString("action"));
-
                 for (int i = 0; i < 3; i++) {
+                    int ran = rand.nextInt(Main.chooses.size());
+
+                    Main.chosen.add(new JSONObject(Main.chooses.get(ran)).getString("name"));
+                    Main.chosenActions.add(new JSONObject(Main.chooses.get(ran)).getString("action"));
+
                     Main.votes.add(String.valueOf(0));
                     update(i, 0);
+                    if(Main.hide){
+                        Bot.send((i+1)+". "+Main.chosen.get(i));
+                    }
                 }
                 for (Iterator<Team> t = Main.board.getTeams().iterator(); t.hasNext(); ) {
                     Team team = t.next();
@@ -66,7 +63,7 @@ public class CommandChallonge implements CommandExecutor {
 
             Runnable task1 = () -> scheduler.scheduleSyncRepeatingTask(Main.pulga, task2, 0L, convertToLong(Main.config.getInt("delay") + Main.config.getInt("time")));
 
-            Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Starting...");
+            Bukkit.broadcastMessage(Main.prefix + " Starting...");
             scheduler.scheduleSyncDelayedTask(Main.pulga, task1, 200L);
 
 
@@ -74,7 +71,10 @@ public class CommandChallonge implements CommandExecutor {
             Main.board = m.getMainScoreboard();
 
             Main.challonge = Main.board.registerNewObjective("challonge", "", "" + ChatColor.WHITE + ChatColor.BOLD + "Challonge");
-            Main.challonge.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+            if(!Main.hide){
+                Main.challonge.setDisplaySlot(DisplaySlot.SIDEBAR);
+            }
 
             for (int i = 1; i < 4; i++) {
                 Team t = Main.board.registerNewTeam(i + ". ");
@@ -83,7 +83,7 @@ public class CommandChallonge implements CommandExecutor {
                 Main.challonge.getScore(i + ". ").setScore(0);
             }
 
-            Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Loaded, waiting 10 seconds");
+            Bukkit.broadcastMessage(Main.prefix + " Loaded, waiting 10 seconds");
 
             final JSONObject obj = new JSONObject(Main.config.getString("actions"));
             final JSONArray arr = obj.getJSONArray("arr");
@@ -92,12 +92,18 @@ public class CommandChallonge implements CommandExecutor {
                 Main.chooses.add(curr.toString());
             }
         }else{
-            sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Disabling...");
+            sender.sendMessage(Main.prefix + " Disabling...");
             Main.challonge.unregister();
             Bukkit.getScheduler().cancelTasks(Main.pulga);
             Main.enabled = false;
             Main.chooses.clear();
-            sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Disabled");
+
+            for (Iterator<Team> t = Main.board.getTeams().iterator(); t.hasNext();) {
+                Team team = t.next();
+                team.unregister();
+            }
+
+            sender.sendMessage(Main.prefix + " Disabled");
         }
         return true;
     }

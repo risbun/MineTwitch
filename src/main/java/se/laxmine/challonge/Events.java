@@ -16,6 +16,6 @@ public class Events implements Listener
     */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Type /ch to start Challonge. First time? Go to /plugins/Challonge/config.yml and setup the plugin");
+        event.getPlayer().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Type /ch to start Challonge. \nFirst time? Go to /plugins/Challonge/config.yml and setup the plugin");
     }
 }

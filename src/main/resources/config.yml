@@ -31,6 +31,9 @@ delay: 60
 # Vote time (amount of time viewers have to vote) in seconds
 time: 15
 
+# Hide commands from ingame (commands will be sent in twitch chat)
+hide: false
+
 # ADVANCED SETTINGS
 
 # Vote actions (actions users can choose between)

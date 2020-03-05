@@ -23,20 +23,24 @@ public class Main extends JavaPlugin implements Listener {
     public static List<String> votes = new ArrayList<>();
     public static List<String> chosen = new ArrayList<>();
     public static List<String> chosenActions = new ArrayList<>();
-    public static Boolean votenow = false;
+    public static boolean votenow = false;
     public static Plugin pulga = null;
-    public static Boolean enabled = false;
+    public static boolean enabled = false;
     public static FileConfiguration config;
     public static TwitchClient twitchClient;
+    public static boolean hide = false;
+    public static String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE;
 
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new Events(), this);
         pulga = this;
-        Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Type /chEnable to start Challonge. First time? Go to /plugins/Challonge/config.yml and setup the plugin");
+        Bukkit.broadcastMessage(prefix + " Type /chEnable to start Challonge. First time? Go to /plugins/Challonge/config.yml and setup the plugin");
         this.getCommand("ch").setExecutor(new CommandChallonge());
         this.saveDefaultConfig();
         config = this.getConfig();
+
+        Main.hide = config.getBoolean("hide");
 
         OAuth2Credential oauth = new OAuth2Credential("twitch", config.getString("oauth"));
         twitchClient = TwitchClientBuilder.builder()
