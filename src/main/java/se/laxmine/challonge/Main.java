@@ -1,63 +1,62 @@
-package java.se.laxmine.challonge;
+package se.laxmine.challonge;
 
-import com.gikk.twirk.Twirk;
+import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
+import com.github.twitch4j.TwitchClient;
+import com.github.twitch4j.TwitchClientBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Main extends JavaPlugin implements Listener {
-    public static Twirk twirk;
     public static Objective challonge;
-    public static Team one;
-    public static Team two;
-    public static Team three;
+    public static Scoreboard board;
     public static List<String> chooses = new ArrayList<>();
     public static List<String> globalVotes = new ArrayList<>();
-    public static List<String> oneVotes = new ArrayList<>();
-    public static List<String> twoVotes = new ArrayList<>();
-    public static List<String> threeVotes = new ArrayList<>();
+    public static List<String> votes = new ArrayList<>();
     public static List<String> chosen = new ArrayList<>();
     public static List<String> chosenActions = new ArrayList<>();
     public static Boolean votenow = false;
     public static Plugin pulga = null;
     public static Boolean enabled = false;
     public static FileConfiguration config;
+    public static TwitchClient twitchClient;
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(this, this);
+        getServer().getPluginManager().registerEvents(new Events(), this);
         pulga = this;
         Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Type /chEnable to start Challonge. First time? Go to /plugins/Challonge/config.yml and setup the plugin");
-        this.getCommand("chEnable").setExecutor(new CommandEnable());
-        this.getCommand("chDisable").setExecutor(new CommandDisable());
+        this.getCommand("ch").setExecutor(new CommandChallonge());
         this.saveDefaultConfig();
         config = this.getConfig();
+
+        OAuth2Credential oauth = new OAuth2Credential("twitch", config.getString("oauth"));
+        twitchClient = TwitchClientBuilder.builder()
+                .withEnableHelix(true)
+                .withChatAccount(oauth)
+                .withEnableChat(true)
+                .build();
+
+        Bot.load(twitchClient);
     }
 
     @Override
     public void onDisable() {
-        if(enabled) {
-            twirk.disconnect();
-            challonge.unregister();
-            one.unregister();
-            two.unregister();
-            three.unregister();
-            Bukkit.getScheduler().cancelTasks(pulga);
-            Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Disabled");
+        twitchClient.close();
+        for (Iterator<Team> t = Main.board.getTeams().iterator(); t.hasNext();) {
+            Team team = t.next();
+            team.unregister();
         }
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Type /chEnable to start Challonge. First time? Go to /plugins/Challonge/config.yml and setup the plugin");
+        challonge.unregister();
+        Bukkit.getScheduler().cancelTasks(pulga);
+        Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Disabled");
     }
 }

@@ -1,58 +1,62 @@
-package java.se.laxmine.challonge;
+package se.laxmine.challonge;
 
-import com.gikk.twirk.Twirk;
-import com.gikk.twirk.commands.CommandExampleBase;
-import com.gikk.twirk.enums.USER_TYPE;
-import com.gikk.twirk.types.twitchMessage.TwitchMessage;
-import com.gikk.twirk.types.users.TwitchUser;
+import com.github.philippheuer.events4j.core.EventManager;
+import com.github.philippheuer.events4j.simple.SimpleEventHandler;
+import com.github.twitch4j.TwitchClient;
+import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-public class Bot extends CommandExampleBase {
-    private final static String patternA = "1";
-    private final static String patternB = "2";
-    private final static String patternC = "3";
-
-    private final Twirk twirk;
-
-    public Bot(Twirk twirk) {
-        super(CommandType.PREFIX_COMMAND);
-        this.twirk = twirk;
+public class Bot {
+    public static void load(TwitchClient twitchClient){
+        Bot s = new Bot();
+        s.run(twitchClient);
     }
 
-    @Override
-    protected String getCommandWords() {
-        return patternA + "|" + patternB + "|" + patternC;
-    }
+    private void run(TwitchClient twitchClient){
+        String channel = Main.config.getString("channel");
+        twitchClient.getChat().joinChannel(channel);
 
-    @Override
-    protected USER_TYPE getMinUserPrevilidge() {
-        return USER_TYPE.DEFAULT;
+        EventManager eventManager = twitchClient.getEventManager();
+        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, this::onMessage);
     }
+    String[] permissions = { "BROADCASTER", "MODERATOR", "VIP", "SUBSCRIBER" };
+    String[] tags = {ChatColor.RED+"Streamer", ChatColor.GREEN+"Mod", ChatColor.LIGHT_PURPLE+"VIP", ChatColor.DARK_PURPLE+"SUB"};
 
-    @Override
-    protected void performCommand(String command, TwitchUser sender, TwitchMessage message) {
-        if (Main.votenow && Main.globalVotes.contains(sender.getUserName()) == false) {
-            Main.globalVotes.add(sender.getUserName());
-            if (command.equals(patternA)) {
-                Main.oneVotes.add(sender.getUserName());
-                updateStats(1);
-            } else if (command.equals(patternB)) {
-                Main.twoVotes.add(sender.getUserName());
-                updateStats(2);
-            } else if (command.equals(patternC)) {
-                Main.threeVotes.add(sender.getUserName());
-                updateStats(3);
+    //SUBSCRIBER, BROADCASTER, EVERYONE, MODERATOR
+    private void onMessage(ChannelMessageEvent event) {
+        if(!event.getUser().getName().contains("ireezbot")){
+            if(event.getMessage().equals("1") || event.getMessage().equals("2") || event.getMessage().equals("3")){
+                if(Main.votenow){
+                    if(!Main.globalVotes.contains(event.getUser().getId())) {
+                        int vote = Integer.parseInt(event.getMessage()) - 1;
+
+                        int val = Integer.parseInt(Main.votes.get(vote));
+                        val++;
+                        Main.votes.set(vote, String.valueOf(val));
+
+                        CommandChallonge.update(vote, val);
+
+                        Main.globalVotes.add(event.getUser().getId());
+
+                        Bukkit.broadcastMessage("Votes: " + Main.votes.toString());
+                    }
+                }
+            }else{
+                String tag = "";
+                for(int i = 0; i<4;i++){
+                    if(tag.equals("")){
+                        if(event.getPermissions().toString().contains(permissions[i])){
+                            tag = tags[i]+" ";
+                        }
+                    }
+                }
+                Bukkit.broadcastMessage(tag+event.getUser().getName()+ ChatColor.WHITE+": "+event.getMessage());
             }
         }
     }
 
-    private void updateStats(Integer i) {
-        if (i == 1) {
-            Main.one.setPrefix(ChatColor.WHITE + " 1. " + Main.chosen.get(0) + " - " + Main.oneVotes.size());
-        } else if (i == 2) {
-            Main.two.setPrefix(ChatColor.WHITE + " 2. " + Main.chosen.get(1) + " - " + Main.twoVotes.size());
-        } else if (i == 3) {
-            Main.three.setPrefix(ChatColor.WHITE + " 3. " + Main.chosen.get(2) + " - " + Main.threeVotes.size());
-        }
+    public static void send(String text) {
+        Main.twitchClient.getChat().sendMessage(Main.config.getString("channel"), text);
     }
 }

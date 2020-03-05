@@ -1,11 +1,8 @@
 name: Challonge
-version: 13.37
+version: 1.0
 main: se.laxmine.challonge.Main
 api-version: 1.15
 commands:
-  chEnable:
-    description: Start challonge
-    usage: /ch enable
-  chDisable:
-    description: Turn off challonge
-    usage: /ch disable
+  ch:
+    description: Challonge
+    usage: /ch
