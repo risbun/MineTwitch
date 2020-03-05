@@ -25,7 +25,7 @@ public class Bot {
 
     //SUBSCRIBER, BROADCASTER, EVERYONE, MODERATOR
     private void onMessage(ChannelMessageEvent event) {
-        if(!event.getUser().getName().contains("ireezbot")){
+        if(!event.getUser().getName().contains(Main.config.getString("username"))){
             if(event.getMessage().equals("1") || event.getMessage().equals("2") || event.getMessage().equals("3")){
                 if(Main.votenow){
                     if(!Main.globalVotes.contains(event.getUser().getId())) {
@@ -39,7 +39,7 @@ public class Bot {
 
                         Main.globalVotes.add(event.getUser().getId());
 
-                        Bukkit.broadcastMessage("Votes: " + Main.votes.toString());
+                        //debug command Bukkit.broadcastMessage("Votes: " + Main.votes.toString());
                     }
                 }
             }else{
