@@ -1,6 +1,6 @@
-# Challonge
+# MineTwitch
 
-Challonge is a Minecraft Twitch Intergration.
+MineTwitch is a Minecraft Twitch Intergration.
 
 Viewers can vote on commands they want to happen in the game.
 
