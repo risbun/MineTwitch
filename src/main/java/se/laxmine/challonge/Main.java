@@ -16,51 +16,44 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Main extends JavaPlugin implements Listener {
-    public static Objective challonge;
-    public static Scoreboard board;
-    public static List<String> chooses = new ArrayList<>();
-    public static List<String> globalVotes = new ArrayList<>();
-    public static List<String> votes = new ArrayList<>();
-    public static List<String> chosen = new ArrayList<>();
-    public static List<String> chosenActions = new ArrayList<>();
-    public static boolean votenow = false;
-    public static Plugin pulga = null;
-    public static boolean enabled = false;
-    public static FileConfiguration config;
-    public static TwitchClient twitchClient;
-    public static boolean hide = false;
-    public static String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE;
+    static Objective challonge;
+    static Scoreboard board;
+    static List<String> chooses = new ArrayList<>();
+    static List<String> globalVotes = new ArrayList<>();
+    static List<String> votes = new ArrayList<>();
+    static List<String> chosen = new ArrayList<>();
+    static List<String> chosenActions = new ArrayList<>();
+    static boolean votenow = false;
+    static Plugin p = null;
+    static boolean enabled = false;
+    static FileConfiguration config;
+    static TwitchClient twitchClient;
+    static boolean hide = false;
+    static String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE;
 
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new Events(), this);
-        pulga = this;
+        p = this;
         Bukkit.broadcastMessage(prefix + " Type /chEnable to start Challonge. First time? Go to /plugins/Challonge/config.yml and setup the plugin");
         this.getCommand("ch").setExecutor(new CommandChallonge());
         this.saveDefaultConfig();
         config = this.getConfig();
-
         Main.hide = config.getBoolean("hide");
-
-        OAuth2Credential oauth = new OAuth2Credential("twitch", config.getString("oauth"));
-        twitchClient = TwitchClientBuilder.builder()
-                .withEnableHelix(true)
-                .withChatAccount(oauth)
-                .withEnableChat(true)
-                .build();
-
-        Bot.load(twitchClient);
     }
 
     @Override
     public void onDisable() {
         twitchClient.close();
-        for (Iterator<Team> t = Main.board.getTeams().iterator(); t.hasNext();) {
-            Team team = t.next();
+        for (Team team : Main.board.getTeams()) {
             team.unregister();
         }
         challonge.unregister();
-        Bukkit.getScheduler().cancelTasks(pulga);
+        Bukkit.getScheduler().cancelTasks(p);
         Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.WHITE + "Challonge" + ChatColor.DARK_GRAY + "]" + ChatColor.WHITE + " Disabled");
+    }
+
+    public void disable(){
+        this.setEnabled(false);
     }
 }

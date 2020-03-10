@@ -7,6 +7,8 @@ import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import static se.laxmine.challonge.Main.twitchClient;
+
 public class Bot {
     public static void load(TwitchClient twitchClient){
         Bot s = new Bot();
@@ -14,7 +16,7 @@ public class Bot {
     }
 
     private void run(TwitchClient twitchClient){
-        String channel = Main.config.getString("channel");
+        String channel = config.getString("channel");
         twitchClient.getChat().joinChannel(channel);
 
         EventManager eventManager = twitchClient.getEventManager();
@@ -25,21 +27,21 @@ public class Bot {
 
     //SUBSCRIBER, BROADCASTER, EVERYONE, MODERATOR
     private void onMessage(ChannelMessageEvent event) {
-        if(!event.getUser().getName().contains(Main.config.getString("username"))){
+        if(!event.getUser().getName().contains(config.getString("username"))){
             if(event.getMessage().equals("1") || event.getMessage().equals("2") || event.getMessage().equals("3")){
-                if(Main.votenow){
-                    if(!Main.globalVotes.contains(event.getUser().getId())) {
+                if(votenow){
+                    if(!globalVotes.contains(event.getUser().getId())) {
                         int vote = Integer.parseInt(event.getMessage()) - 1;
 
-                        int val = Integer.parseInt(Main.votes.get(vote));
+                        int val = Integer.parseInt(votes.get(vote));
                         val++;
-                        Main.votes.set(vote, String.valueOf(val));
+                        votes.set(vote, String.valueOf(val));
 
                         CommandChallonge.update(vote, val);
 
-                        Main.globalVotes.add(event.getUser().getId());
+                        globalVotes.add(event.getUser().getId());
 
-                        //debug command Bukkit.broadcastMessage("Votes: " + Main.votes.toString());
+                        //debug command Bukkit.broadcastMessage("Votes: " + votes.toString());
                     }
                 }
             }else{
@@ -57,6 +59,6 @@ public class Bot {
     }
 
     public static void send(String text) {
-        Main.twitchClient.getChat().sendMessage(Main.config.getString("channel"), text);
+        twitchClient.getChat().sendMessage(config.getString("channel"), text);
     }
 }
