@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import static org.bukkit.Bukkit.getServer;
@@ -26,6 +28,8 @@ public class CommandMinetwitch implements CommandExecutor {
         if(sender.isOp()) {
             if (!enabled) {
                 enabled = true;
+                Bukkit.broadcastMessage(prefix + " Starting...");
+
                 BukkitScheduler scheduler = getServer().getScheduler();
 
                 OAuth2Credential oauth = null;
@@ -36,13 +40,15 @@ public class CommandMinetwitch implements CommandExecutor {
                     Bukkit.broadcastMessage("Authid not set, Read https://example.com");
                 }
 
-                twitchClient = TwitchClientBuilder.builder()
-                        .withEnableHelix(true)
-                        .withChatAccount(oauth)
-                        .withEnableChat(true)
-                        .build();
+                if(twitchClient == null){
+                    twitchClient = TwitchClientBuilder.builder()
+                            .withEnableHelix(true)
+                            .withChatAccount(oauth)
+                            .withEnableChat(true)
+                            .build();
 
-                Bot.load(twitchClient);
+                    Bot.load(twitchClient);
+                }
 
                 Runnable results = () -> {
                     votenow = false;
@@ -50,34 +56,41 @@ public class CommandMinetwitch implements CommandExecutor {
 
                     Bot.send(chosen.get(n));
 
-                    activeCommand = "All blocks have gravity";
-
-                    getServer().dispatchCommand(Bukkit.getConsoleSender(), chosenActions.get(n));
+                    CommandParser parser = new CommandParser();
+                    parser.send(chosen.get(n), chosenActions.get(n));
                 };
 
                 Runnable voting = () -> {
                     Bot.send("Starting voting now!");
 
                     votenow = true;
-                    activeCommand = "";
+                    customCommand = "";
 
                     globalVotes.clear();
                     votes.clear();
+
                     chosen.clear();
                     chosenActions.clear();
 
-                    for (int i = 0; i < 3; i++) {
-                        int ran = rand.nextInt(chooses.size());
+                    ArrayList arr = (ArrayList) commandsConfig.get("arr");
 
-                        chosen.add(new JSONObject(chooses.get(ran)).getString("name"));
-                        chosenActions.add(new JSONObject(chooses.get(ran)).getString("action"));
+
+                    for (int i = 0; i < 3; i++) {
+                        int ran = rand.nextInt(arr.size());
+
+                        HashMap hash = (HashMap) arr.get(ran);
+
+                        chosen.add(hash.get("name").toString());
+                        chosenActions.add(hash.get("action").toString());
 
                         votes.add(String.valueOf(0));
                         update(i, 0);
+
                         if (hide) {
                             Bot.send((i + 1) + ". " + chosen.get(i));
                         }
                     }
+
                     for (Team team : board.getTeams()) {
                         team.setSuffix(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1));
                     }
@@ -86,14 +99,13 @@ public class CommandMinetwitch implements CommandExecutor {
 
                 Runnable starting = () -> scheduler.scheduleSyncRepeatingTask(p, voting, 0L, convertToLong(config.getInt("delay") + config.getInt("time")));
 
-                Bukkit.broadcastMessage(prefix + " Starting...");
                 scheduler.scheduleSyncDelayedTask(p, starting, 200L);
 
 
                 ScoreboardManager m = Bukkit.getScoreboardManager();
                 board = m != null ? m.getMainScoreboard() : null;
 
-                minetwitch = board != null ? board.registerNewObjective("minetwitch", "", "" + ChatColor.WHITE + ChatColor.BOLD + "Challonge") : null;
+                minetwitch = board != null ? board.registerNewObjective("minetwitch", "", prefix) : null;
 
                 if (!hide) {
                     if (minetwitch != null) {
@@ -112,14 +124,8 @@ public class CommandMinetwitch implements CommandExecutor {
                 }
 
                 Bukkit.broadcastMessage(prefix + " Loaded, waiting 10 seconds");
-
-                final JSONObject obj = new JSONObject(config.getString("actions"));
-                final JSONArray arr = obj.getJSONArray("arr");
-                for (int i = 0; i < arr.length(); i++) {
-                    final JSONObject curr = arr.getJSONObject(i);
-                    chooses.add(curr.toString());
-                }
             } else {
+                enabled = false;
                 disable();
             }
         }else{

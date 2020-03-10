@@ -4,5 +4,5 @@ main: se.laxmine.minetwitch.Main
 api-version: 1.15
 commands:
   mt:
-    description: Challonge
+    description: MineTwitch
     usage: /mt

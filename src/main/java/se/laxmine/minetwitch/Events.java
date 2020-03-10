@@ -25,7 +25,7 @@ public class Events implements Listener
         Player p = event.getPlayer();
 
         //All blocks have gravity
-        if(activeCommand.equals("All blocks have gravity")){
+        if(customCommand.equals("gravity")){
             List<Block> blocks = getNearbyBlocks(p.getLocation(), 5);
 
             for (Block b : blocks) {
