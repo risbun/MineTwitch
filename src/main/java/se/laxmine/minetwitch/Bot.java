@@ -1,4 +1,4 @@
-package se.laxmine.challonge;
+package se.laxmine.minetwitch;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
@@ -7,7 +7,7 @@ import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-import static se.laxmine.challonge.Main.twitchClient;
+import static se.laxmine.minetwitch.Main.*;
 
 public class Bot {
     public static void load(TwitchClient twitchClient){
@@ -37,7 +37,7 @@ public class Bot {
                         val++;
                         votes.set(vote, String.valueOf(val));
 
-                        CommandChallonge.update(vote, val);
+                        CommandMinetwitch.update(vote, val);
 
                         globalVotes.add(event.getUser().getId());
 

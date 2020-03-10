@@ -1,4 +1,4 @@
-package se.laxmine.challonge;
+package se.laxmine.minetwitch;
 
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.twitch4j.TwitchClientBuilder;
@@ -16,9 +16,9 @@ import org.json.JSONObject;
 import java.util.Random;
 
 import static org.bukkit.Bukkit.getServer;
-import static se.laxmine.challonge.Main.*;
+import static se.laxmine.minetwitch.Main.*;
 
-public class CommandChallonge implements CommandExecutor {
+public class CommandMinetwitch implements CommandExecutor {
     private Random rand = new Random();
 
     @Override
@@ -29,11 +29,13 @@ public class CommandChallonge implements CommandExecutor {
                 BukkitScheduler scheduler = getServer().getScheduler();
 
                 OAuth2Credential oauth = null;
+
                 if(!config.getString("oauth").equals("oauth:xxxx")){
                     oauth = new OAuth2Credential("twitch", config.getString("oauth"));
                 }else{
-                    Bukkit.broadcastMessage("Wrong oauth id.");
+                    Bukkit.broadcastMessage("Authid not set, Read https://example.com");
                 }
+
                 twitchClient = TwitchClientBuilder.builder()
                         .withEnableHelix(true)
                         .withChatAccount(oauth)
@@ -42,18 +44,22 @@ public class CommandChallonge implements CommandExecutor {
 
                 Bot.load(twitchClient);
 
-                Runnable task3 = () -> {
+                Runnable results = () -> {
                     votenow = false;
                     int n = getWinning();
 
                     Bot.send(chosen.get(n));
 
+                    activeCommand = "All blocks have gravity";
+
                     getServer().dispatchCommand(Bukkit.getConsoleSender(), chosenActions.get(n));
                 };
 
-                Runnable task2 = () -> {
+                Runnable voting = () -> {
                     Bot.send("Starting voting now!");
+
                     votenow = true;
+                    activeCommand = "";
 
                     globalVotes.clear();
                     votes.clear();
@@ -75,33 +81,33 @@ public class CommandChallonge implements CommandExecutor {
                     for (Team team : board.getTeams()) {
                         team.setSuffix(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1));
                     }
-                    scheduler.scheduleSyncDelayedTask(p, task3, convertToLong(config.getInt("time")));
+                    scheduler.scheduleSyncDelayedTask(p, results, convertToLong(config.getInt("time")));
                 };
 
-                Runnable task1 = () -> scheduler.scheduleSyncRepeatingTask(p, task2, 0L, convertToLong(config.getInt("delay") + config.getInt("time")));
+                Runnable starting = () -> scheduler.scheduleSyncRepeatingTask(p, voting, 0L, convertToLong(config.getInt("delay") + config.getInt("time")));
 
                 Bukkit.broadcastMessage(prefix + " Starting...");
-                scheduler.scheduleSyncDelayedTask(p, task1, 200L);
+                scheduler.scheduleSyncDelayedTask(p, starting, 200L);
 
 
                 ScoreboardManager m = Bukkit.getScoreboardManager();
                 board = m != null ? m.getMainScoreboard() : null;
 
-                challonge = board != null ? board.registerNewObjective("challonge", "", "" + ChatColor.WHITE + ChatColor.BOLD + "Challonge") : null;
+                minetwitch = board != null ? board.registerNewObjective("minetwitch", "", "" + ChatColor.WHITE + ChatColor.BOLD + "Challonge") : null;
 
                 if (!hide) {
-                    if (challonge != null) {
-                        challonge.setDisplaySlot(DisplaySlot.SIDEBAR);
+                    if (minetwitch != null) {
+                        minetwitch.setDisplaySlot(DisplaySlot.SIDEBAR);
                     }
                 }
 
                 for (int i = 1; i < 4; i++) {
-                    Team t = null;
                     if (board != null) {
+                        Team t;
                         t = board.registerNewTeam(i + ". ");
                         t.addEntry(i + ". ");
                         t.setSuffix("Loading...");
-                        challonge.getScore(i + ". ").setScore(0);
+                        minetwitch.getScore(i + ". ").setScore(0);
                     }
                 }
 
@@ -114,17 +120,7 @@ public class CommandChallonge implements CommandExecutor {
                     chooses.add(curr.toString());
                 }
             } else {
-                sender.sendMessage(prefix + " Disabling...");
-                challonge.unregister();
-                Bukkit.getScheduler().cancelTasks(p);
-                enabled = false;
-                chooses.clear();
-
-                for (Team team : board.getTeams()) {
-                    team.unregister();
-                }
-
-                sender.sendMessage(prefix + " Disabled");
+                disable();
             }
         }else{
             sender.sendMessage(prefix + " You have to be OP to send this command");
@@ -149,6 +145,6 @@ public class CommandChallonge implements CommandExecutor {
 
     static void update(int n, int val){
         n++;
-        challonge.getScore(n+". ").setScore(val);
+        minetwitch.getScore(n+". ").setScore(val);
     }
 }

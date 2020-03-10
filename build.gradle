@@ -9,14 +9,14 @@ version '0.1'
 
 sourceCompatibility = 1.8
 
-mainClassName = 'se.laxmine.challonge.Main'
+mainClassName = 'se.laxmine.minetwitch.Main'
 
 repositories {
     mavenCentral()
     jcenter()
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url "https://oss.jfrog.org/artifactory/libs-release"}
+    maven { url = "https://oss.jfrog.org/artifactory/libs-release"}
 }
 
 dependencies {
