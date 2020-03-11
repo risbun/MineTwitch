@@ -33,15 +33,15 @@ The command could either be bad or good. It's all up to the viewers.
 
 # Config
 
-HOW TO SETUP
-go to https://twitchapps.com/tmi/ and connect with Twitch
-put the ouath:xxxx key under oauth down below
-put the accounts username under username
-put your twitch channel under channel
-done
+HOW TO SETUP <br>
+go to https://twitchapps.com/tmi/ and connect with Twitch <br>
+put the ouath:xxxx key under oauth down below <br>
+put the accounts username under username <br>
+put your twitch channel under channel <br>
+done <br>
 
 
-<h2> CHAT BOT </h2>
+<h4> CHAT BOT </h4>
 You can use your own Twitch account if you don't have a dedicated bot.
 
 Bot OAuth (grab at https://twitchapps.com/tmi/)
@@ -53,7 +53,7 @@ Bot username
 Twitch channel
 <pre>channel: 'examplechannel'</pre>
 
-<h2> GENERAL SETTINGS </h2>
+<h4> GENERAL SETTINGS </h4>
 
 Vote delay (amount of time between vote end and next vote) in seconds
 <pre>delay: 60</pre>
