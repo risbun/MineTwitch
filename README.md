@@ -41,7 +41,7 @@ put your twitch channel under channel
 done
 
 
-# CHAT BOT
+<h2> CHAT BOT </h2>
 You can use your own Twitch account if you don't have a dedicated bot.
 
 Bot OAuth (grab at https://twitchapps.com/tmi/)
@@ -53,16 +53,16 @@ Bot username
 Twitch channel
 <pre>channel: 'examplechannel'</pre>
 
-# GENERAL SETTINGS
+<h2> GENERAL SETTINGS </h2>
 
 Vote delay (amount of time between vote end and next vote) in seconds
-delay: 60
+<pre>delay: 60</pre>
 
 Vote time (amount of time viewers have to vote) in seconds
-time: 15
+<pre>time: 15</pre>
 
 Hide commands from ingame (commands will be sent in twitch chat)
-hide: false
+<pre>hide: false</pre>
 
 # Custom commands
 
