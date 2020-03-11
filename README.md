@@ -1,4 +1,6 @@
-# MineTwitch
+<h1 align="center">
+	MineTwitch
+</h1>
 
 MineTwitch is a Minecraft Twitch Intergration.
 
@@ -11,3 +13,5 @@ So twitch chat is allowed to vote on different commands and whatever they should
 while the streamer is trying to beat the game like normal.
 
 # Made by ThaCheeseBun and ReeZey
+
+
