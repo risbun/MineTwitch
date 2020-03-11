@@ -32,37 +32,27 @@ The command could either be bad or good. It's all up to the viewers.
 </ol>
 
 # Config
-
-HOW TO SETUP <br>
-go to https://twitchapps.com/tmi/ and connect with Twitch <br>
-put the ouath:xxxx key under oauth down below <br>
-put the accounts username under username <br>
-put your twitch channel under channel <br>
-done <br>
-
-
 <h4> CHAT BOT </h4>
-You can use your own Twitch account if you don't have a dedicated bot.
 
-Bot OAuth (grab at https://twitchapps.com/tmi/)
+Bot oauth token:
 <pre>oauth: 'oauth:xxxx'</pre>
 
-Bot username
+Bot username:
 <pre>username: 'examplename'</pre>
 
-Twitch channel
+Twitch channel:
 <pre>channel: 'examplechannel'</pre>
 
 <h4> GENERAL SETTINGS </h4>
 
 Vote delay (amount of time between vote end and next vote) in seconds
-<pre>delay: 60</pre>
+<pre>delay: (Default 60)</pre>
 
 Vote time (amount of time viewers have to vote) in seconds
-<pre>time: 15</pre>
+<pre>time: (Default 15)</pre>
 
-Hide commands from ingame (commands will be sent in twitch chat)
-<pre>hide: false</pre>
+Hide commands from ingame (commands will be sent in twitch chat, might be hard to catch up for large streamers)
+<pre>hide: (Default false)</pre>
 
 # Custom commands
 
