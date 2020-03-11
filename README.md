@@ -33,35 +33,35 @@ The command could either be bad or good. It's all up to the viewers.
 
 # Config
 
-### HOW TO SETUP
-### go to https://twitchapps.com/tmi/ and connect with Twitch
-### put the ouath:xxxx key under oauth down below
-### put the accounts username under username
-### put your twitch channel under channel
-### done
+HOW TO SETUP
+go to https://twitchapps.com/tmi/ and connect with Twitch
+put the ouath:xxxx key under oauth down below
+put the accounts username under username
+put your twitch channel under channel
+done
 
 
-### CHAT BOT
-### You can use your own Twitch account if you don't have a dedicated bot.
+# CHAT BOT
+You can use your own Twitch account if you don't have a dedicated bot.
 
-### Bot OAuth (grab at https://twitchapps.com/tmi/)
-oauth: 'oauth:xxxx'
+Bot OAuth (grab at https://twitchapps.com/tmi/)
+<pre>oauth: 'oauth:xxxx'</pre>
 
-### Bot username
-username: 'examplename'
+Bot username
+<pre>username: 'examplename'</pre>
 
-### Twitch channel
-channel: 'examplechannel'
+Twitch channel
+<pre>channel: 'examplechannel'</pre>
 
-### GENERAL SETTINGS
+# GENERAL SETTINGS
 
-### Vote delay (amount of time between vote end and next vote) in seconds
+Vote delay (amount of time between vote end and next vote) in seconds
 delay: 60
 
-### Vote time (amount of time viewers have to vote) in seconds
+Vote time (amount of time viewers have to vote) in seconds
 time: 15
 
-### Hide commands from ingame (commands will be sent in twitch chat)
+Hide commands from ingame (commands will be sent in twitch chat)
 hide: false
 
 # Custom commands
