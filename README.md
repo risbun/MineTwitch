@@ -27,7 +27,7 @@ The command could either be bad or good. It's all up to the viewers.
 	<li>Type in the name of the account you used when acquiring the oauth token after <pre>username:</pre>Example: <pre>username: 'iReeZBot'</pre></li>
 	<li>Type in your Twitch channles name (can be the same as your username) after <pre>channel:</pre>Example: <pre>channel: 'iReeZey'</pre></li>
 	<li>Now go to your server terminal and type <pre>/reload</pre></li>
-	<li>Open up Minecraft and connect to your server (if you used the bundled zip, type in<pre>localhost</pre>in the address field)</li>
+	<li>Open up Minecraft and connect to your server. if you used the bundled zip, type <pre>localhost</pre>in the address field</li>
 	<li>When you are ready, type this command in chat: <pre>/mt</pre></li>
 </ol>
 
