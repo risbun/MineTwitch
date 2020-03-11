@@ -15,11 +15,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Main extends JavaPlugin implements Listener {
     static Objective minetwitch;
     static Scoreboard board;
-    static List<String> chooses = new ArrayList<>();
     static List<String> globalVotes = new ArrayList<>();
     static List<String> votes = new ArrayList<>();
     static List<String> chosen = new ArrayList<>();
@@ -33,7 +33,6 @@ public class Main extends JavaPlugin implements Listener {
     static boolean hide = false;
     static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
 
-    private File commandsFile;
     static FileConfiguration commandsConfig;
 
 
@@ -42,7 +41,7 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new Events(), this);
         p = this;
         Bukkit.broadcastMessage(prefix + " Type /mt to start MineTwitch.\n\nFirst time? Go to /plugins/MineTwitch/config.yml and setup the plugin");
-        this.getCommand("mt").setExecutor(new CommandMinetwitch());
+        Objects.requireNonNull(this.getCommand("mt")).setExecutor(new CommandMinetwitch());
 
         this.saveDefaultConfig();
         this.saveConfig();
@@ -73,9 +72,9 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     private void CreateCommandJSON() {
-        commandsFile = new File(getDataFolder(), "commands.json");
+        File commandsFile = new File(getDataFolder(), "commands.json");
         if (!commandsFile.exists()) {
-            commandsFile.getParentFile().mkdirs();
+            commandsFile.getParentFile().mkdirs()
             saveResource("commands.json", false);
         }
 

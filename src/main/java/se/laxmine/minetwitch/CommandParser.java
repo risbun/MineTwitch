@@ -10,13 +10,14 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.Objects;
+
 import static org.bukkit.Bukkit.getScheduler;
 import static org.bukkit.Bukkit.getServer;
 import static se.laxmine.minetwitch.Main.*;
-import static se.laxmine.minetwitch.Main.config;
 
-public class CommandParser {
-    public void send(String alias, String command){
+class CommandParser {
+    void send(String alias, String command){
         if(!command.startsWith("custom")){
             getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
             if(command.startsWith("give")){
@@ -49,7 +50,7 @@ public class CommandParser {
                         for (int x = 0; x < 3; x++) {
                             for (int z = 0; z < 3; z++) {
                                 Block b = target.getLocation().add(x, (y*-1), z).getBlock();
-                                FallingBlock fb = b.getLocation().getWorld().spawnFallingBlock(b.getLocation().subtract(new Vector(-0.5, 0, -0.5)), b.getBlockData());
+                                FallingBlock fb = Objects.requireNonNull(b.getLocation().getWorld()).spawnFallingBlock(b.getLocation().subtract(new Vector(-0.5, 0, -0.5)), b.getBlockData());
 
                                 b.setType(Material.AIR);
 
@@ -62,9 +63,7 @@ public class CommandParser {
             if(c.equals("pumpkin")){
                 getServer().dispatchCommand(Bukkit.getConsoleSender(), "replaceitem entity @p armor.head minecraft:carved_pumpkin{Enchantments:[{id:binding_curse,lvl:1}]}");
 
-                Runnable removePumpkin = () -> {
-                    getServer().dispatchCommand(Bukkit.getConsoleSender(), "replaceitem entity @p armor.head minecraft:air");
-                };
+                Runnable removePumpkin = () -> getServer().dispatchCommand(Bukkit.getConsoleSender(), "replaceitem entity @p armor.head minecraft:air");
 
                 getScheduler().scheduleSyncDelayedTask(p, removePumpkin, 600L);
             }

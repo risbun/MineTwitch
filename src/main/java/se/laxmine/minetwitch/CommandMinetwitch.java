@@ -3,18 +3,19 @@ package se.laxmine.minetwitch;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.twitch4j.TwitchClientBuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 import static org.bukkit.Bukkit.getServer;
@@ -34,8 +35,8 @@ public class CommandMinetwitch implements CommandExecutor {
 
                 OAuth2Credential oauth = null;
 
-                if(!config.getString("oauth").equals("oauth:xxxx")){
-                    oauth = new OAuth2Credential("twitch", config.getString("oauth"));
+                if(!Objects.requireNonNull(config.getString("oauth")).equals("oauth:xxxx")){
+                    oauth = new OAuth2Credential("twitch", Objects.requireNonNull(config.getString("oauth")));
                 }else{
                     Bukkit.broadcastMessage("Authid not set, Read https://example.com");
                 }
@@ -76,7 +77,7 @@ public class CommandMinetwitch implements CommandExecutor {
 
 
                     for (int i = 0; i < 3; i++) {
-                        int ran = rand.nextInt(arr.size());
+                        int ran = rand.nextInt(Objects.requireNonNull(arr).size());
 
                         HashMap hash = (HashMap) arr.get(ran);
 
@@ -135,7 +136,7 @@ public class CommandMinetwitch implements CommandExecutor {
     }
 
     private long convertToLong(int i) {
-        return (long) (i * 20);
+        return i * 20;
     }
 
     private int getWinning() {
