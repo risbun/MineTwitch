@@ -74,7 +74,7 @@ public class Main extends JavaPlugin implements Listener {
     private void CreateCommandJSON() {
         File commandsFile = new File(getDataFolder(), "commands.json");
         if (!commandsFile.exists()) {
-            commandsFile.getParentFile().mkdirs()
+            commandsFile.getParentFile().mkdirs();
             saveResource("commands.json", false);
         }
 
