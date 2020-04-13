@@ -35,13 +35,15 @@ public class CommandMinetwitch implements CommandExecutor {
 
                 OAuth2Credential oauth = null;
 
-                if(!Objects.requireNonNull(config.getString("oauth")).equals("oauth:xxxx")){
+                if (!Objects.requireNonNull(config.getString("oauth")).equals("oauth:xxxx")) {
                     oauth = new OAuth2Credential("twitch", Objects.requireNonNull(config.getString("oauth")));
-                }else{
-                    Bukkit.broadcastMessage("Authid not set, Read https://example.com");
+                } else {
+                    Bukkit.broadcastMessage(prefix + " OAuth in config not set, follow from step 5 under getting started on this page: https://gg.gg/MineTwitchSetup");
+                    enabled = false;
+                    return false;
                 }
 
-                if(twitchClient == null){
+                if (twitchClient == null){
                     twitchClient = TwitchClientBuilder.builder()
                             .withEnableHelix(true)
                             .withChatAccount(oauth)
@@ -62,7 +64,7 @@ public class CommandMinetwitch implements CommandExecutor {
                 };
 
                 Runnable voting = () -> {
-                    Bot.send("Starting voting now!");
+                    Bot.send("Start voting now!");
 
                     votenow = true;
                     customCommand = "";
@@ -130,7 +132,7 @@ public class CommandMinetwitch implements CommandExecutor {
                 disable();
             }
         }else{
-            sender.sendMessage(prefix + " You have to be OP to send this command");
+            sender.sendMessage(prefix + " You have to be OP to use this command");
         }
         return true;
     }

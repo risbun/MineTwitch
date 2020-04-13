@@ -1,3 +1,5 @@
+# For a guide on how to set this up, read getting started on this link: https://gg.gg/MineTwitchSetup
+
 oauth: 'oauth:xxxx'
 username: 'examplename'
 channel: 'examplechannel'
