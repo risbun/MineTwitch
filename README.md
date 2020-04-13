@@ -55,6 +55,4 @@ Hide commands from ingame (commands will be sent in twitch chat, might be hard t
 
 // add custom commands guide
 
-# Made by ThaCheeseBun and ReeZey
-
-
+## Copyright &copy; 2020 - MineTwitch Authors, Twitch Logo &copy; 2020 Twitch, Minecraft Logo &copy; 2020 Mojang
