@@ -3,20 +3,32 @@
   <head>
     <title>MineTwitch</title>
     <meta charset="utf-8"/>
-	  <script type="text/javascript">
-    window.onscroll=()=>{
-      var elem=document.querySelector('#navbar');
-      if(document.body.scrollTop>50||document.documentElement.scrollTop>50) elem.className="navbar navbar-scrolled";
-      else elem.className="navbar";
-    };
-    window.onload=()=>{
-      var elem=document.querySelector('.minetwitch-back');
-      var rannum=Math.floor(Math.random()*3);
-      if(rannum==0)elem.setAttribute('src','mc1.png');
-      else if(rannum==1)elem.setAttribute('src','mc2.png');
-      else if(rannum==2)elem.setAttribute('src','mc3.png');
-      else elem.setAttribute('src','mc1.png');
-    };
+    <script type="text/javascript" defer>
+      var elem = document.querySelector('.minetwitch-back');
+      var rannum = Math.floor(Math.random() * 3);
+      if (rannum == 0) elem.setAttribute('src', 'mc1.png');
+      else if (rannum == 1) elem.setAttribute('src', 'mc2.png');
+      else if (rannum == 2) elem.setAttribute('src', 'mc3.png');
+      else elem.setAttribute('src', 'mc1.png');
+      renderMarkdown();
+	    
+      var renderMarkdown = () => {
+        var url = "https://rawcdn.githack.com/ThaCheeseBun/MineTwitch/ab2b792a8ebe214ba1a35f4b460e5dd9fb1f7b80/README.md";
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	      document.querySelector('.content-left').innerHTML = marked(xhttp.responseText);
+	    }
+	};
+	xhttp.open("GET", url, true);
+	xhttp.send();
+      };
+	    
+      window.onscroll = () => {
+        var elem = document.querySelector('#navbar');
+        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) elem.className = "navbar navbar-scrolled";
+        else elem.className = "navbar";
+      };
     </script>
     <style>
       @import url('https://fonts.googleapis.com/css?family=Press+Start+2P|Ubuntu&display=swap');
@@ -141,7 +153,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MineTwitch - A twitch integration plugin to make Minecraft even funnier"/>
     <meta property="og:image" content="MineTwitch.png" />
-    <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
   <body>
     <div class="navbar" id="navbar">
@@ -156,13 +168,11 @@
         <p>Twitch chat voting integration for Minecraft. Vote on actions and they happen ingame.</p>
       </div>
       <div class="content">
-            <embed class="content-left" src="./README.md" width="400" height="400">
+        <div class="content-left"></div>
         <div class="content-right">
           <a href="https://github.com/ThaCheeseBun/MineTwitch/releases"><i class="fas fa-cloud-download-alt"></i>&nbsp;Download from GitHub</a>
           <hr>
           <p><i class="fas fa-code-branch"></i>&nbsp;<strong>Version</strong>: 0.1</p>
-          <hr>
-          <p><i class="fas fa-calendar-day"></i>&nbsp;<strong>Updated</strong>: 2069-13-37</p>
           <hr>
           <p>
             <strong style="vertical-align: middle;">Authors</strong>:
