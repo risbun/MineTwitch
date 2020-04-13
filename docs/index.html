@@ -3,14 +3,16 @@
   <head>
     <title>MineTwitch</title>
     <meta charset="utf-8"/>
-    <script type="text/javascript" defer>
-      var elem = document.querySelector('.minetwitch-back');
-      var rannum = Math.floor(Math.random() * 3);
-      if (rannum == 0) elem.setAttribute('src', 'mc1.png');
-      else if (rannum == 1) elem.setAttribute('src', 'mc2.png');
-      else if (rannum == 2) elem.setAttribute('src', 'mc3.png');
-      else elem.setAttribute('src', 'mc1.png');
-      renderMarkdown();
+    <script type="text/javascript">
+      window.onload = () => {
+        var elem = document.querySelector('.minetwitch-back');
+        var rannum = Math.floor(Math.random() * 3);
+        if (rannum == 0) elem.setAttribute('src', 'mc1.png');
+        else if (rannum == 1) elem.setAttribute('src', 'mc2.png');
+        else if (rannum == 2) elem.setAttribute('src', 'mc3.png');
+        else elem.setAttribute('src', 'mc1.png');
+        renderMarkdown();
+      };
 	    
       var renderMarkdown = () => {
         var url = "https://rawcdn.githack.com/ThaCheeseBun/MineTwitch/ab2b792a8ebe214ba1a35f4b460e5dd9fb1f7b80/README.md";
