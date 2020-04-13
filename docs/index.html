@@ -7,10 +7,10 @@
       window.onload = () => {
         var elem = document.querySelector('.minetwitch-back');
         var rannum = Math.floor(Math.random() * 3);
-        if (rannum == 0) elem.setAttribute('src', 'mc1.png');
+        /*if (rannum == 0) elem.setAttribute('src', 'mc1.png');
         else if (rannum == 1) elem.setAttribute('src', 'mc2.png');
         else if (rannum == 2) elem.setAttribute('src', 'mc3.png');
-        else elem.setAttribute('src', 'mc1.png');
+        else elem.setAttribute('src', 'mc1.png');*/
         renderMarkdown();
       };
 	    
@@ -33,7 +33,7 @@
       };
     </script>
     <style>
-      @import url('https://fonts.googleapis.com/css?family=Press+Start+2P|Ubuntu&display=swap');
+      @import url('https://fonts.googleapis.com/css?family=Press+Start+2P|Ubuntu|Ubuntu+Mono&display=swap');
     body {
       margin: 0;
       background: #2c2c2c;
@@ -74,9 +74,6 @@
       background: rgba(0,0,0,.5);
     }
     .footer {
-      position: absolute;
-      bottom: 1vh;
-      left: 0;
       width: 100%;
       text-align: center;
       font-size: 0.8vw;
@@ -148,6 +145,25 @@
       width: 40px;
       vertical-align: middle;
     }
+      li {
+        list-style-position: inside;
+      }
+      pre {
+        border-radius: 10px;
+        background: #000;
+        padding: 5px;
+        font-family: 'Ubuntu Mono', monospace;
+        display: table-cell;
+        margin-bottom: 10px;
+      }
+      h1, h2 {
+        border-bottom: 1px solid grey;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+      }
+      .content-left, a {
+        color: cyan;
+      }
     </style>
     <link href="MineTwitch.png" rel="shortcut icon" type="image/png"/>
     <link href="MineTwitch.png" rel="apple-touch-icon"/>
@@ -184,9 +200,6 @@
           <hr>
           <a href="https://github.com/ThaCheeseBun/MineTwitch"><i class="fab fa-github"></i>&nbsp;GitHub page</a>
         </div>
-      </div>
-      <div class="footer">
-        Copyright &copy; 2020 - MineTwitch Authors, Twitch Logo &copy; 2020 Twitch, Minecraft Logo &copy; 2020 Mojang
       </div>
     </div>
   </body>
