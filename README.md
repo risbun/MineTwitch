@@ -40,7 +40,7 @@ Bot username:
 Twitch channel:
 <pre>channel: 'examplechannel'</pre>
 
-<h4 title="note1"> GENERAL SETTINGS </h4>
+<h4 name="note1"> GENERAL SETTINGS </h4>
 
 Vote delay (amount of time between vote end and next vote) in seconds
 <pre>delay: (Default 60)</pre>
