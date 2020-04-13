@@ -40,7 +40,7 @@ Bot username:
 Twitch channel:
 <pre>channel: 'examplechannel'</pre>
 
-<h4> GENERAL SETTINGS </h4>
+<h4 title="note1"> GENERAL SETTINGS </h4>
 
 Vote delay (amount of time between vote end and next vote) in seconds
 <pre>delay: (Default 60)</pre>
@@ -53,6 +53,6 @@ Hide commands from ingame (commands will be sent in twitch chat, might be hard t
 
 # Custom commands
 
-// add custom commands guide
+custom commands guide coming soon™
 
 ## Copyright &copy; 2020 - MineTwitch Authors, Twitch Logo &copy; 2020 Twitch, Minecraft Logo &copy; 2020 Mojang
