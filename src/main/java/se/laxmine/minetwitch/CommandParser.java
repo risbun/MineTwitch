@@ -19,14 +19,13 @@ import static se.laxmine.minetwitch.Main.*;
 class CommandParser {
     void send(String alias, String command){
         if(!command.startsWith("custom")){
-            getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+            sendCommand(command);
             if(command.startsWith("give")){
                 Bukkit.broadcastMessage(alias);
-                getServer().dispatchCommand(Bukkit.getConsoleSender(), "title @a title \"" +alias+"\"");
+                sendCommand("title @a title \"" +alias+"\"");
             }
         }else{
             String c = command.split(" ")[1];
-
             if(c.equals("gravity")){
                 customCommand = c;
             }
@@ -61,12 +60,26 @@ class CommandParser {
                 }
             }
             if(c.equals("pumpkin")){
-                getServer().dispatchCommand(Bukkit.getConsoleSender(), "replaceitem entity @p armor.head minecraft:carved_pumpkin{Enchantments:[{id:binding_curse,lvl:1}]}");
+                sendCommand("replaceitem entity @a armor.head minecraft:carved_pumpkin{Enchantments:[{id:binding_curse,lvl:1}]}");
 
-                Runnable removePumpkin = () -> getServer().dispatchCommand(Bukkit.getConsoleSender(), "replaceitem entity @p armor.head minecraft:air");
+                Runnable removePumpkin = () -> sendCommand("replaceitem entity @p armor.head minecraft:air");
 
                 getScheduler().scheduleSyncDelayedTask(p, removePumpkin, 600L);
             }
+            if(c.equals("adventure")){
+                sendCommand("gamemode adventure @a");
+                Runnable removePumpkin = () -> sendCommand("gamemode survival @a");
+
+                getScheduler().scheduleSyncDelayedTask(p, removePumpkin, 600L);
+            }
+            if(c.equals("water")){
+                sendCommand("fill ~2 ~2 ~2 ~-2 ~-2 ~-2 stone hollow");
+                sendCommand("fill ~1 ~1 ~1 ~-1 ~-1 ~-1 water");
+            }
         }
+    }
+
+    void sendCommand(String command){
+        getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
     }
 }
