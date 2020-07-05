@@ -43,7 +43,7 @@ public class CommandMinetwitch implements CommandExecutor {
                     return false;
                 }
 
-                if (twitchClient == null){
+                if (twitchClient == null) {
                     twitchClient = TwitchClientBuilder.builder()
                             .withEnableHelix(true)
                             .withChatAccount(oauth)

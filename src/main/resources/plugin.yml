@@ -6,3 +6,6 @@ commands:
   mt:
     description: MineTwitch
     usage: /mt
+  mtreload:
+    description: Reload config
+    usage: /mtreload

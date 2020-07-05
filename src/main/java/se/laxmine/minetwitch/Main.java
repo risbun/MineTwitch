@@ -42,6 +42,7 @@ public class Main extends JavaPlugin implements Listener {
         p = this;
         Bukkit.broadcastMessage(prefix + " Type /mt to start MineTwitch.\n\nFirst time? Go to /plugins/MineTwitch/config.yml and setup the plugin");
         Objects.requireNonNull(this.getCommand("mt")).setExecutor(new CommandMinetwitch());
+        Objects.requireNonNull(this.getCommand("mtreload")).setExecutor(new CommandReload());
 
         this.saveDefaultConfig();
         this.saveConfig();
@@ -54,19 +55,23 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        String channel = config.getString("channel");
+        if (channel != null) {
+            twitchClient.getChat().leaveChannel(channel);
+            twitchClient.close();
+        }
         disable();
     }
 
     static void disable(){
-        twitchClient.close();
-        twitchClient = null;
-
         customCommand = "";
 
         for (Team team : Main.board.getTeams()) {
             team.unregister();
         }
-        minetwitch.unregister();
+        try {
+            minetwitch.unregister();
+        } catch (Exception e) {}
         Bukkit.getScheduler().cancelTasks(p);
         Bukkit.broadcastMessage(prefix + " Disabled");
     }
