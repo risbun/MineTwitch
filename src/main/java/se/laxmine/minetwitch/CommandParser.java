@@ -73,8 +73,13 @@ class CommandParser {
                 getScheduler().scheduleSyncDelayedTask(p, removePumpkin, 600L);
             }
             if(c.equals("water")){
-                sendCommand("fill ~2 ~2 ~2 ~-2 ~-2 ~-2 stone hollow");
-                sendCommand("fill ~1 ~1 ~1 ~-1 ~-1 ~-1 water");
+                sendCommand("execute at @a run fill ~2 ~2 ~2 ~-2 ~-2 ~-2 stone hollow");
+                sendCommand("execute at @a run fill ~1 ~1 ~1 ~-1 ~-1 ~-1 water");
+            }
+            if(c.equals("portal")){
+                sendCommand("execute at @a run fill ~-1 ~-1 ~ ~2 ~3 ~ minecraft:obsidian");
+                sendCommand("execute at @a run fill ~1 ~ ~ ~ ~2 ~ minecraft:air");
+                sendCommand("execute at @a run setblock ~ ~ ~ fire");
             }
         }
     }
