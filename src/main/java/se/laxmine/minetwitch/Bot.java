@@ -26,10 +26,9 @@ class Bot {
         EventManager eventManager = twitchClient.getEventManager();
         eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, this::onMessage);
     }
-    private String[] permissions = { "BROADCASTER", "MODERATOR", "VIP", "SUBSCRIBER" };
-    private String[] tags = {ChatColor.RED+"Streamer", ChatColor.GREEN+"Mod", ChatColor.LIGHT_PURPLE+"VIP", ChatColor.DARK_PURPLE+"SUB"};
+    private final String[] permissions = { "BROADCASTER", "MODERATOR", "VIP", "SUBSCRIBER" };
+    private final String[] tags = {ChatColor.RED+"Streamer", ChatColor.GREEN+"Mod", ChatColor.LIGHT_PURPLE+"VIP", ChatColor.DARK_PURPLE+"SUB"};
 
-    //SUBSCRIBER, BROADCASTER, EVERYONE, MODERATOR
     private void onMessage(ChannelMessageEvent event) {
         if(!event.getUser().getName().contains(Objects.requireNonNull(config.getString("username")))){
             if(event.getMessage().equals("1") || event.getMessage().equals("2") || event.getMessage().equals("3")){

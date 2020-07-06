@@ -22,7 +22,7 @@ import static org.bukkit.Bukkit.getServer;
 import static se.laxmine.minetwitch.Main.*;
 
 public class CommandMinetwitch implements CommandExecutor {
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     @Override
     public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -33,7 +33,7 @@ public class CommandMinetwitch implements CommandExecutor {
 
                 BukkitScheduler scheduler = getServer().getScheduler();
 
-                OAuth2Credential oauth = null;
+                OAuth2Credential oauth;
 
                 if (!Objects.requireNonNull(config.getString("oauth")).equals("oauth:xxxx")) {
                     oauth = new OAuth2Credential("twitch", Objects.requireNonNull(config.getString("oauth")));
@@ -131,7 +131,7 @@ public class CommandMinetwitch implements CommandExecutor {
                 enabled = false;
                 disable();
             }
-        }else{
+        } else {
             sender.sendMessage(prefix + " You have to be OP to use this command");
         }
         return true;
@@ -154,6 +154,6 @@ public class CommandMinetwitch implements CommandExecutor {
 
     static void update(int n, int val){
         n++;
-        minetwitch.getScore(n+". ").setScore(val);
+        minetwitch.getScore(n + ". ").setScore(val);
     }
 }

@@ -71,7 +71,9 @@ public class Main extends JavaPlugin implements Listener {
         }
         try {
             minetwitch.unregister();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            return;
+        }
         Bukkit.getScheduler().cancelTasks(p);
         Bukkit.broadcastMessage(prefix + " Disabled");
     }
@@ -79,7 +81,6 @@ public class Main extends JavaPlugin implements Listener {
     private void CreateCommandJSON() {
         File commandsFile = new File(getDataFolder(), "commands.json");
         if (!commandsFile.exists()) {
-            commandsFile.getParentFile().mkdirs();
             saveResource("commands.json", false);
         }
 

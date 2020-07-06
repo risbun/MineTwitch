@@ -1,13 +1,16 @@
 package se.laxmine.minetwitch;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.Objects;
@@ -62,29 +65,45 @@ class CommandParser {
             if(c.equals("pumpkin")){
                 sendCommand("replaceitem entity @a armor.head minecraft:carved_pumpkin{Enchantments:[{id:binding_curse,lvl:1}]}");
 
-                Runnable removePumpkin = () -> sendCommand("replaceitem entity @p armor.head minecraft:air");
+                Runnable removePumpkin = () -> sendCommand("replaceitem entity @a armor.head minecraft:air");
 
                 getScheduler().scheduleSyncDelayedTask(p, removePumpkin, 600L);
             }
             if(c.equals("adventure")){
-                sendCommand("gamemode adventure @a");
-                Runnable removePumpkin = () -> sendCommand("gamemode survival @a");
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    p.setGameMode(GameMode.ADVENTURE);
+                }
+                Runnable removeAdventure = () -> {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.setGameMode(GameMode.SURVIVAL);
+                    }
+                };
 
-                getScheduler().scheduleSyncDelayedTask(p, removePumpkin, 600L);
+                getScheduler().scheduleSyncDelayedTask(p, removeAdventure, 600L);
             }
             if(c.equals("water")){
-                sendCommand("execute at @a run fill ~2 ~2 ~2 ~-2 ~-2 ~-2 stone hollow");
-                sendCommand("execute at @a run fill ~1 ~1 ~1 ~-1 ~-1 ~-1 water");
+                sendAllCommand("fill ~2 ~2 ~2 ~-2 ~-2 ~-2 stone hollow");
+                sendAllCommand("fill ~1 ~1 ~1 ~-1 ~-1 ~-1 water");
             }
             if(c.equals("portal")){
-                sendCommand("execute at @a run fill ~-1 ~-1 ~ ~2 ~3 ~ minecraft:obsidian");
-                sendCommand("execute at @a run fill ~1 ~ ~ ~ ~2 ~ minecraft:air");
-                sendCommand("execute at @a run setblock ~ ~ ~ fire");
+                sendAllCommand("fill ~-1 ~-1 ~ ~2 ~3 ~ minecraft:obsidian");
+                sendAllCommand("fill ~1 ~ ~ ~ ~2 ~ minecraft:air");
+                sendAllCommand("setblock ~ ~ ~ fire");
+            }
+            if (c.equals("stone")){
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    for (ItemStack i : p.getInventory()) {
+                        System.out.print(i.getType().values()[0]);
+                    }
+                }
             }
         }
     }
 
     void sendCommand(String command){
         getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+    }
+    void sendAllCommand(String command){
+        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute @a run " + command);
     }
 }
