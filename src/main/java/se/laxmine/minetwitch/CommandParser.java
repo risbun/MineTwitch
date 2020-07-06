@@ -93,7 +93,13 @@ class CommandParser {
             if (c.equals("stone")){
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     for (ItemStack i : p.getInventory()) {
-                        System.out.print(i.getType().values()[0]);
+                        if (i == null) continue;
+                        String yes = i.getType().getKey().toString();
+                        if (yes.contains("sword") || yes.contains("shovel") || yes.contains("axe")) {
+                            String type = yes.split(":")[1].split("_")[1];
+                            Material change = Material.getMaterial("STONE_" + type.toUpperCase());
+                            i.setType(Objects.requireNonNull(change));
+                        };
                     }
                 }
             }

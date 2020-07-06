@@ -14,8 +14,6 @@ public class CommandReload implements CommandExecutor {
             Main.p.reloadConfig();
             Main.config = Main.p.getConfig();
             sender.sendMessage(prefix + " Config reloaded");
-            CommandParser parser = new CommandParser();
-            parser.send("Stone Tools", "custom stone");
         } else {
             sender.sendMessage(prefix + " You have to be OP to use this command");
         }

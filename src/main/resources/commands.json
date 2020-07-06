@@ -43,5 +43,6 @@
   { "name": "Adventure Time!", "action":  "custom adventure"},
   { "name": "Water Cage", "action":  "custom water"},
   { "name": "Nether Portal", "action": "custom portal"},
-  { "name": "Fireball", "action": "execute at @a run summon fireball"}
+  { "name": "Fireball", "action": "execute at @a run summon fireball"},
+  { "name": "Stone Tools", "action": "custom stone" }
 ]}
