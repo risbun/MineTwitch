@@ -8,7 +8,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -99,7 +98,7 @@ class CommandParser {
                             String type = yes.split(":")[1].split("_")[1];
                             Material change = Material.getMaterial("STONE_" + type.toUpperCase());
                             i.setType(Objects.requireNonNull(change));
-                        };
+                        }
                     }
                 }
             }

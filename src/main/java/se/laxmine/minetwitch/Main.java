@@ -72,7 +72,7 @@ public class Main extends JavaPlugin implements Listener {
         try {
             minetwitch.unregister();
         } catch (Exception e) {
-            return;
+            customCommand = "";
         }
         Bukkit.getScheduler().cancelTasks(p);
         Bukkit.broadcastMessage(prefix + " Disabled");

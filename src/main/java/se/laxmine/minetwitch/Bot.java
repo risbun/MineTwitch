@@ -26,14 +26,15 @@ class Bot {
         EventManager eventManager = twitchClient.getEventManager();
         eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, this::onMessage);
     }
+
     private final String[] permissions = { "BROADCASTER", "MODERATOR", "VIP", "SUBSCRIBER" };
     private final String[] tags = {ChatColor.RED+"Streamer", ChatColor.GREEN+"Mod", ChatColor.LIGHT_PURPLE+"VIP", ChatColor.DARK_PURPLE+"SUB"};
 
     private void onMessage(ChannelMessageEvent event) {
-        if(!event.getUser().getName().contains(Objects.requireNonNull(config.getString("username")))){
-            if(event.getMessage().equals("1") || event.getMessage().equals("2") || event.getMessage().equals("3")){
-                if(votenow){
-                    if(!globalVotes.contains(event.getUser().getId())) {
+        if (!event.getUser().getName().contains(Objects.requireNonNull(config.getString("username")))) {
+            if (event.getMessage().equals("1") || event.getMessage().equals("2") || event.getMessage().equals("3")) {
+                if (votenow) {
+                    if (!globalVotes.contains(event.getUser().getId())) {
                         int vote = Integer.parseInt(event.getMessage()) - 1;
 
                         int val = Integer.parseInt(votes.get(vote));
@@ -45,16 +46,18 @@ class Bot {
                         globalVotes.add(event.getUser().getId());
                     }
                 }
-            }else{
-                String tag = "";
-                for(int i = 0; i<4;i++){
-                    if(tag.equals("")){
-                        if(event.getPermissions().toString().contains(permissions[i])){
-                            tag = tags[i]+" ";
+            } else {
+                if (config.getBoolean("chat")) {
+                    String tag = "";
+                    for (int i = 0; i < 4; i++) {
+                        if (tag.equals("")) {
+                            if (event.getPermissions().toString().contains(permissions[i])) {
+                                tag = tags[i] + " ";
+                            }
                         }
                     }
+                    Bukkit.broadcastMessage(tag + event.getUser().getName() + ChatColor.WHITE + ": " + event.getMessage());
                 }
-                Bukkit.broadcastMessage(tag+event.getUser().getName()+ ChatColor.WHITE+": "+event.getMessage());
             }
         }
     }
