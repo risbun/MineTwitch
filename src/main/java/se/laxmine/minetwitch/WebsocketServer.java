@@ -5,51 +5,80 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static se.laxmine.minetwitch.Main.chosen;
+import static se.laxmine.minetwitch.Main.votes;
 
 public class WebsocketServer extends WebSocketServer {
     private static final int TCP_PORT = 8080;
 
-    private final Set<WebSocket> conns;
+    public static Set<WebSocket> conns;
+    public static List<InetSocketAddress> users = new ArrayList<>();
+
+    public static void unlock(){
+        for(WebSocket c : conns) {
+            c.send("unlock()");
+        }
+    }
+
+    public static void reset(){
+        if(users != null)
+            users.clear();
+    }
 
     public WebsocketServer() {
         super(new InetSocketAddress(TCP_PORT));
         conns = new HashSet<>();
     }
 
+    public static void update() {
+        for(WebSocket c : conns) {
+            for(int i = 0; i < 3; i++){
+                c.send("update("+i+",'"+chosen.get(i)+"')");
+            }
+        }
+    }
+
+    public static void lock() {
+        for(WebSocket c : conns) {
+            c.send("lock()");
+        }
+    }
+
     @Override
     public void onStart() {
-        System.out.println("Server started");
+        System.out.println("WebSocket Server Running");
     }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         conns.add(conn);
-        System.out.println("New connection from " + conn.getRemoteSocketAddress().getAddress().getHostAddress());
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         conns.remove(conn);
-        System.out.println("Closed connection to " + conn.getRemoteSocketAddress().getAddress().getHostAddress());
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        System.out.println("Message from client: " + message);
-
-        for(WebSocket c : conns){
-
-            switch(message){
-            case "1":
-            case "2":
-            case "3":
+        for(WebSocket c : conns) {
+            if(users.contains(c.getRemoteSocketAddress())){
                 c.send("lock()");
-                break;
-            default:
-                c.send("unlock()");
-                break;
+            }else {
+                switch (message) {
+                    case "0":
+                    case "1":
+                    case "2":
+                        c.send("lock()");
+                        votes.set(Integer.parseInt(message), votes.get(Integer.parseInt(message))+1);
+                        users.add(c.getRemoteSocketAddress());
+                        break;
+                }
             }
         }
     }

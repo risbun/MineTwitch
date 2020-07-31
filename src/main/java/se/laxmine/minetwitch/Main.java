@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
+import org.java_websocket.server.WebSocketServer;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,18 +19,15 @@ import java.util.Objects;
 
 public class Main extends JavaPlugin implements Listener {
     static Objective minetwitch;
-    static Scoreboard board;
-    static List<String> globalVotes = new ArrayList<>();
     static List<String> votes = new ArrayList<>();
     static List<String> chosen = new ArrayList<>();
     static List<String> chosenActions = new ArrayList<>();
     static String customCommand = "";
-    static boolean votenow = false;
     static Plugin p = null;
-    static boolean enabled = false;
     static FileConfiguration config;
-    static boolean hide = false;
     static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
+
+    static WebSocketServer s;
 
     static FileConfiguration commandsConfig;
 
@@ -46,6 +44,9 @@ public class Main extends JavaPlugin implements Listener {
         this.saveConfig();
         config = this.getConfig();
 
+        s = new WebsocketServer();
+        s.start();
+
         CreateCommandJSON();
     }
 
@@ -53,13 +54,11 @@ public class Main extends JavaPlugin implements Listener {
     public void onDisable() {
         customCommand = "";
 
-        for (Team team : Main.board.getTeams()) {
-            team.unregister();
-        }
         try {
+            s.stop(0);
             minetwitch.unregister();
         } catch (Exception e) {
-            customCommand = "";
+            e.printStackTrace();
         }
         Bukkit.getScheduler().cancelTasks(p);
         Bukkit.broadcastMessage(prefix + " Disabled");
