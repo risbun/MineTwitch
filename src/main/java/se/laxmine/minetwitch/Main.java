@@ -1,6 +1,5 @@
 package se.laxmine.minetwitch;
 
-import com.github.twitch4j.TwitchClient;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -29,7 +28,6 @@ public class Main extends JavaPlugin implements Listener {
     static Plugin p = null;
     static boolean enabled = false;
     static FileConfiguration config;
-    static TwitchClient twitchClient = null;
     static boolean hide = false;
     static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
 
@@ -48,22 +46,11 @@ public class Main extends JavaPlugin implements Listener {
         this.saveConfig();
         config = this.getConfig();
 
-        hide = config.getBoolean("hide");
-
         CreateCommandJSON();
     }
 
     @Override
     public void onDisable() {
-        String channel = config.getString("channel");
-        if (channel != null) {
-            twitchClient.getChat().leaveChannel(channel);
-            twitchClient.close();
-        }
-        disable();
-    }
-
-    static void disable(){
         customCommand = "";
 
         for (Team team : Main.board.getTeams()) {
