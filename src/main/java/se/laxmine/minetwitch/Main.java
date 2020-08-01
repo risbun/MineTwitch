@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class Main extends JavaPlugin implements Listener {
     static Objective minetwitch;
-    static List<String> votes = new ArrayList<>();
+    static List<Integer> votes = new ArrayList<>();
     static List<String> chosen = new ArrayList<>();
     static List<String> chosenActions = new ArrayList<>();
     static String customCommand = "";
@@ -28,6 +28,7 @@ public class Main extends JavaPlugin implements Listener {
     static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
 
     static WebSocketServer s;
+    static WebSocketServer info;
 
     static FileConfiguration commandsConfig;
 
@@ -44,8 +45,11 @@ public class Main extends JavaPlugin implements Listener {
         this.saveConfig();
         config = this.getConfig();
 
-        s = new WebsocketServer();
+        s = new VotingSocket();
         s.start();
+
+        info = new InfoSocket();
+        info.start();
 
         CreateCommandJSON();
     }
@@ -55,7 +59,8 @@ public class Main extends JavaPlugin implements Listener {
         customCommand = "";
 
         try {
-            s.stop(0);
+            s.stop();
+            info.stop();
             minetwitch.unregister();
         } catch (Exception e) {
             e.printStackTrace();

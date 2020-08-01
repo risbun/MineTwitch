@@ -109,6 +109,6 @@ class CommandParser {
         getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
     }
     void sendAllCommand(String command){
-        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute @a run " + command);
+        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at @a run " + command);
     }
 }

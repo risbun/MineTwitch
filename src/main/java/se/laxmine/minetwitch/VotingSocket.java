@@ -10,11 +10,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static se.laxmine.minetwitch.Main.chosen;
-import static se.laxmine.minetwitch.Main.votes;
+import static se.laxmine.minetwitch.Main.*;
 
-public class WebsocketServer extends WebSocketServer {
-    private static final int TCP_PORT = 8080;
+public class VotingSocket extends WebSocketServer {
+    private static final int TCP_PORT = 69;
 
     public static Set<WebSocket> conns;
     public static List<InetSocketAddress> users = new ArrayList<>();
@@ -30,7 +29,7 @@ public class WebsocketServer extends WebSocketServer {
             users.clear();
     }
 
-    public WebsocketServer() {
+    public VotingSocket() {
         super(new InetSocketAddress(TCP_PORT));
         conns = new HashSet<>();
     }
@@ -51,36 +50,38 @@ public class WebsocketServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        System.out.println("WebSocket Server Running");
+        System.out.println("Votingsocket running");
     }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
+        InfoSocket.sendAll("Connection from " + conn.getRemoteSocketAddress());
         conns.add(conn);
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+        InfoSocket.sendAll("Connection lost " + conn.getRemoteSocketAddress());
         conns.remove(conn);
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        for(WebSocket c : conns) {
-            if(users.contains(c.getRemoteSocketAddress())){
-                c.send("lock()");
-            }else {
-                switch (message) {
-                    case "0":
-                    case "1":
-                    case "2":
-                        c.send("lock()");
-                        votes.set(Integer.parseInt(message), votes.get(Integer.parseInt(message))+1);
-                        users.add(c.getRemoteSocketAddress());
-                        break;
-                }
+        if(users.contains(conn.getRemoteSocketAddress())){
+            conn.send("lock()");
+        }else {
+            switch (message) {
+                case "0":
+                case "1":
+                case "2":
+                    conn.send("lock()");
+                    int msg = Integer.parseInt(message);
+                    votes.set(msg, votes.get(msg)+1);
+                    users.add(conn.getRemoteSocketAddress());
+                    break;
             }
         }
+        InfoSocket.sendAll("Message from " + conn.getRemoteSocketAddress() + " text: " + message);
     }
 
     @Override
@@ -88,6 +89,7 @@ public class WebsocketServer extends WebSocketServer {
         if (conn != null) {
             conns.remove(conn);
             System.out.println("ERROR from " + conn.getRemoteSocketAddress().getAddress().getHostAddress());
+            InfoSocket.sendAll("ERROR from " + conn.getRemoteSocketAddress().getAddress().getHostAddress());
         }
     }
 }
