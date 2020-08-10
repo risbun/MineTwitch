@@ -18,6 +18,12 @@ public class VotingSocket extends WebSocketServer {
     public static Set<WebSocket> conns;
     public static List<InetSocketAddress> users = new ArrayList<>();
 
+    public static void lock() {
+        for(WebSocket c : conns) {
+            c.send("lock()");
+        }
+    }
+
     public static void unlock(){
         for(WebSocket c : conns) {
             c.send("unlock()");
@@ -39,12 +45,6 @@ public class VotingSocket extends WebSocketServer {
             for(int i = 0; i < 3; i++){
                 c.send("update("+i+",'"+chosen.get(i)+"')");
             }
-        }
-    }
-
-    public static void lock() {
-        for(WebSocket c : conns) {
-            c.send("lock()");
         }
     }
 
