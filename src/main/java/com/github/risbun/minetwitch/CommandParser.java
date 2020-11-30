@@ -1,4 +1,4 @@
-package se.laxmine.minetwitch;
+package com.github.risbun.minetwitch;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import static org.bukkit.Bukkit.getScheduler;
 import static org.bukkit.Bukkit.getServer;
-import static se.laxmine.minetwitch.Main.*;
+import static com.github.risbun.minetwitch.Main.*;
 
 class CommandParser {
     void send(String alias, String command){

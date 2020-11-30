@@ -1,4 +1,4 @@
-package se.laxmine.minetwitch;
+package com.github.risbun.minetwitch;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static se.laxmine.minetwitch.Main.*;
+import static com.github.risbun.minetwitch.Main.*;
 
 public class Events implements Listener
 {

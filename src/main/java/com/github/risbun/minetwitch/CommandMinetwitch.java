@@ -1,4 +1,4 @@
-package se.laxmine.minetwitch;
+package com.github.risbun.minetwitch;
 
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.twitch4j.TwitchClientBuilder;
@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import static org.bukkit.Bukkit.getServer;
-import static se.laxmine.minetwitch.Main.*;
+import static com.github.risbun.minetwitch.Main.*;
 
 public class CommandMinetwitch implements CommandExecutor {
     private final Random rand = new Random();

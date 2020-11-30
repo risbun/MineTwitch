@@ -1,4 +1,4 @@
-package se.laxmine.minetwitch;
+package com.github.risbun.minetwitch;
 
 import com.github.twitch4j.TwitchClient;
 import org.bukkit.Bukkit;

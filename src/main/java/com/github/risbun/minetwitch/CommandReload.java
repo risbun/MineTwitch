@@ -1,11 +1,11 @@
-package se.laxmine.minetwitch;
+package com.github.risbun.minetwitch;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import static se.laxmine.minetwitch.Main.prefix;
+import static com.github.risbun.minetwitch.Main.prefix;
 
 public class CommandReload implements CommandExecutor {
     @Override

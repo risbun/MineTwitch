@@ -1,6 +1,6 @@
 name: MineTwitch
-version: 1.0.1
-main: se.laxmine.minetwitch.Main
+version: 1.0.2
+main: com.github.risbun.minetwitch.Main
 api-version: 1.16
 commands:
   mt:

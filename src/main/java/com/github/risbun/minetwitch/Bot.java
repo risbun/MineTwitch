@@ -1,4 +1,4 @@
-package se.laxmine.minetwitch;
+package com.github.risbun.minetwitch;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 
 import java.util.Objects;
 
-import static se.laxmine.minetwitch.Main.*;
+import static com.github.risbun.minetwitch.Main.*;
 
 class Bot {
     static void load(TwitchClient twitchClient){
