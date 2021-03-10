@@ -138,7 +138,7 @@ public class CommandMinetwitch implements CommandExecutor {
     }
 
     private long convertToLong(int i) {
-        return i * 20;
+        return i * 20L;
     }
 
     private int getWinning() {

@@ -1,5 +1,5 @@
 name: MineTwitch
-version: 1.0.2
+version: @version@
 main: com.github.risbun.minetwitch.Main
 api-version: 1.16
 commands:

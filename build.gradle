@@ -1,28 +1,38 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
     id 'java'
-    id 'application'
 }
 
 group 'com.github.risbun'
-version '1.0.2'
+version '1.1.0'
 
-sourceCompatibility = 1.8
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
-mainClassName = 'com.github.risbun.minetwitch.Main'
-
-compileJava.options.encoding = "UTF-8"
+compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
     jcenter()
-    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url = "https://oss.jfrog.org/artifactory/libs-release"}
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
-    compile group: 'com.github.twitch4j', name: 'twitch4j', version: '1.0.0'
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.2.1'
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
 }
