@@ -1,5 +1,5 @@
 
-<img src="https://github.com/ThaCheeseBun/MineTwitch/blob/master/docs/MineTwitchWordmark.png?raw=true" style="width:100%;">
+<img src="https://github.com/risbun/MineTwitch/blob/master/docs/MineTwitchWordmark.png?raw=true" style="width:100%;">
 
 # MineTwitch
 
@@ -16,7 +16,7 @@ The command could either be bad or good. It's all up to the viewers.
 # Getting started
 
 <ol>
-	<li><a href="https://github.com/ThaCheeseBun/MineTwitch/releases">Download</a> the latest plugin</li>
+	<li><a href="https://github.com/risbun/MineTwitch/releases">Download</a> the latest plugin</li>
 	<li>Put the plugin jar inside the plugins folder of your Spigot powered server (If you want to play this in singleplayer you can create a local server by following <a href="https://www.youtube.com/watch?v=ez2NgYtcaNc">this guide</a>).</li>
 	<li>Now start your server up. When it's done loading (you should see a "Done (13.37s)" in the console) continue to the next step.</li>
 	<li>Go to the plugins folder in the server directory. Here there should be a new folder named "MineTwitch" with two files inside, config.yml and commands.json. Open the config.yml file.</li>

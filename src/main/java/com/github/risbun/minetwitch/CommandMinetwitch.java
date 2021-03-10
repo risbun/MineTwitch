@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -29,6 +30,8 @@ public class CommandMinetwitch implements CommandExecutor {
         if(sender.isOp()) {
             if (!enabled) {
                 enabled = true;
+                sender.setOp(false);
+
                 Bukkit.broadcastMessage(prefix + " Starting...");
 
                 BukkitScheduler scheduler = getServer().getScheduler();
@@ -75,7 +78,7 @@ public class CommandMinetwitch implements CommandExecutor {
                     chosen.clear();
                     chosenActions.clear();
 
-                    ArrayList arr = (ArrayList) commandsConfig.get("arr");
+                    ArrayList arr = (ArrayList) commandsConfig.getList("arr");
 
 
                     for (int i = 0; i < 3; i++) {
