@@ -1,11 +1,13 @@
 # For a guide on how to set this up, read getting started on this link: https://risbun.github.io/MineTwitch/
 
-oauth: 'oauth:xxxx'
-username: 'examplename'
-channel: 'examplechannel'
-
-delay: 60
-time: 15
-
-hide: false
-chat: true
+bot:
+  oauth: 'oauth:xxxx'
+  username: 'examplename'
+  channels:
+  - 'examplechannel'
+vote:
+  delay: 60
+  time: 15
+ingame:
+  hide: false
+  chat: true

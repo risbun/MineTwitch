@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Main extends JavaPlugin implements Listener {
-    static Objective minetwitch;
     static Scoreboard board;
     static List<String> globalVotes = new ArrayList<>();
     static List<String> votes = new ArrayList<>();
@@ -26,54 +25,45 @@ public class Main extends JavaPlugin implements Listener {
     static List<String> chosenActions = new ArrayList<>();
     static String customCommand = "";
     static boolean votenow = false;
-    static Plugin p = null;
     static boolean enabled = false;
-    static FileConfiguration config;
+    static Plugin p = null;
     static TwitchClient twitchClient = null;
-    static boolean hide = false;
     static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
-
     static FileConfiguration commandsConfig;
-
 
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new Events(), this);
         p = this;
         Bukkit.broadcastMessage(prefix + " Type /mt to start MineTwitch.\n\nFirst time? Go to /plugins/MineTwitch/config.yml and setup the plugin");
-        Objects.requireNonNull(this.getCommand("mt")).setExecutor(new CommandMinetwitch());
-        Objects.requireNonNull(this.getCommand("mtreload")).setExecutor(new CommandReload());
+
+        Objects.requireNonNull(this.getCommand("minetwitch")).setExecutor(new CommandMinetwitch());
 
         this.saveDefaultConfig();
-        this.saveConfig();
-        config = this.getConfig();
-
-        hide = config.getBoolean("hide");
 
         CreateCommandJSON();
     }
 
     @Override
     public void onDisable() {
-        String channel = config.getString("channel");
-        if (channel != null) {
-            twitchClient.getChat().leaveChannel(channel);
-            twitchClient.close();
+        List<String> channels = this.getConfig().getStringList("bot.channels");
+        for (String chl : channels) {
+            twitchClient.getChat().leaveChannel(chl);
         }
+        twitchClient.close();
         disable();
     }
 
-    static void disable(){
+    static void disable() {
         customCommand = "";
 
-        for (Team team : Main.board.getTeams()) {
+        for (Team team : board.getTeams()) {
             team.unregister();
         }
-        try {
-            minetwitch.unregister();
-        } catch (Exception e) {
-            customCommand = "";
+        if (board.getObjective("minetwitch") != null) {
+            Objects.requireNonNull(board.getObjective("minetwitch")).unregister();
         }
+
         Bukkit.getScheduler().cancelTasks(p);
         Bukkit.broadcastMessage(prefix + " Disabled");
     }

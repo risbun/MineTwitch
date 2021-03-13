@@ -7,9 +7,11 @@ import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.github.risbun.minetwitch.Main.*;
+import static com.github.risbun.minetwitch.Main.twitchClient;
 
 class Bot {
     static void load(TwitchClient twitchClient){
@@ -18,9 +20,9 @@ class Bot {
     }
 
     private void run(TwitchClient twitchClient){
-        String channel = config.getString("channel");
-        if (channel != null) {
-            twitchClient.getChat().joinChannel(channel);
+        List<String> channels = p.getConfig().getStringList("bot.channels");
+        for (String chl : channels) {
+            twitchClient.getChat().joinChannel(chl);
         }
 
         EventManager eventManager = twitchClient.getEventManager();
@@ -28,10 +30,10 @@ class Bot {
     }
 
     private final String[] permissions = { "BROADCASTER", "MODERATOR", "VIP", "SUBSCRIBER" };
-    private final String[] tags = {ChatColor.RED+"Streamer", ChatColor.GREEN+"Mod", ChatColor.LIGHT_PURPLE+"VIP", ChatColor.DARK_PURPLE+"SUB"};
+    private final String[] tags = { ChatColor.RED + "Streamer", ChatColor.GREEN + "Mod", ChatColor.LIGHT_PURPLE + "VIP", ChatColor.DARK_PURPLE + "SUB"};
 
     private void onMessage(ChannelMessageEvent event) {
-        if (!event.getUser().getName().contains(Objects.requireNonNull(config.getString("username")))) {
+        if (!event.getUser().getName().contains(Objects.requireNonNull(p.getConfig().getString("bot.username")))) {
             if (event.getMessage().equals("1") || event.getMessage().equals("2") || event.getMessage().equals("3")) {
                 if (votenow) {
                     if (!globalVotes.contains(event.getUser().getId())) {
@@ -41,13 +43,15 @@ class Bot {
                         val++;
                         votes.set(vote, String.valueOf(val));
 
-                        CommandMinetwitch.update(vote, val);
+                        if (!p.getConfig().getBoolean("ingame.hide")) {
+                            CommandMinetwitch.update(vote, val);
+                        }
 
                         globalVotes.add(event.getUser().getId());
                     }
                 }
             } else {
-                if (config.getBoolean("chat")) {
+                if (p.getConfig().getBoolean("ingame.chat")) {
                     String tag = "";
                     for (int i = 0; i < 4; i++) {
                         if (tag.equals("")) {
@@ -63,6 +67,9 @@ class Bot {
     }
 
     static void send(String text) {
-        twitchClient.getChat().sendMessage(Objects.requireNonNull(config.getString("channel")), text);
+        List<String> channels = p.getConfig().getStringList("bot.channels");
+        for (String chl : channels) {
+            twitchClient.getChat().sendMessage(chl, text);
+        }
     }
 }

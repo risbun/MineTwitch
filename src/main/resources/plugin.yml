@@ -3,9 +3,7 @@ version: @version@
 main: com.github.risbun.minetwitch.Main
 api-version: 1.16
 commands:
-  mt:
+  minetwitch:
+    aliases: mt
     description: MineTwitch
-    usage: /mt
-  mtreload:
-    description: Reload config
-    usage: /mtreload
+    usage: /minetwitch

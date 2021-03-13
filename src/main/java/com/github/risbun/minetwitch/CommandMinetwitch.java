@@ -7,10 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,121 +26,112 @@ public class CommandMinetwitch implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(sender.isOp()) {
-            if (!enabled) {
-                enabled = true;
-                sender.setOp(false);
+        if (sender.isOp()) {
+            if (args.length > 0 && args[0].equals("reload")) {
+                p.reloadConfig();
+                sender.sendMessage(prefix + " Config reloaded");
+            } else {
+                if (!enabled) {
+                    enabled = true;
 
-                Bukkit.broadcastMessage(prefix + " Starting...");
+                    Bukkit.broadcastMessage(prefix + " Starting...");
+                    BukkitScheduler scheduler = getServer().getScheduler();
+                    OAuth2Credential oauth;
 
-                BukkitScheduler scheduler = getServer().getScheduler();
+                    String oauthString = Objects.requireNonNull(p.getConfig().getString("bot.oauth"));
+                    if (!oauthString.equals("oauth:xxxx")) {
+                        oauth = new OAuth2Credential("twitch", oauthString);
+                    } else {
+                        Bukkit.broadcastMessage(prefix + " OAuth in config not set, follow getting started on this page: https://risbun.github.io/MineTwitch/");
+                        enabled = false;
+                        return true;
+                    }
 
-                OAuth2Credential oauth;
+                    if (twitchClient == null) {
+                        twitchClient = TwitchClientBuilder.builder()
+                                .withEnableHelix(true)
+                                .withChatAccount(oauth)
+                                .withEnableChat(true)
+                                .build();
 
-                if (!Objects.requireNonNull(config.getString("oauth")).equals("oauth:xxxx")) {
-                    oauth = new OAuth2Credential("twitch", Objects.requireNonNull(config.getString("oauth")));
-                } else {
-                    Bukkit.broadcastMessage(prefix + " OAuth in config not set, follow from step 5 under getting started on this page: https://gg.gg/MineTwitchSetup");
-                    enabled = false;
-                    return false;
-                }
+                        Bot.load(twitchClient);
+                    }
 
-                if (twitchClient == null) {
-                    twitchClient = TwitchClientBuilder.builder()
-                            .withEnableHelix(true)
-                            .withChatAccount(oauth)
-                            .withEnableChat(true)
-                            .build();
+                    Runnable results = () -> {
+                        votenow = false;
+                        int n = getWinning();
 
-                    Bot.load(twitchClient);
-                }
+                        Bot.send(chosen.get(n));
 
-                Runnable results = () -> {
-                    votenow = false;
-                    int n = getWinning();
+                        CommandParser parser = new CommandParser();
+                        parser.send(chosen.get(n), chosenActions.get(n));
+                    };
 
-                    Bot.send(chosen.get(n));
+                    Runnable voting = () -> {
+                        Bot.send("Start voting now!");
 
-                    CommandParser parser = new CommandParser();
-                    parser.send(chosen.get(n), chosenActions.get(n));
-                };
+                        votenow = true;
+                        customCommand = "";
 
-                Runnable voting = () -> {
-                    Bot.send("Start voting now!");
+                        globalVotes.clear();
+                        votes.clear();
 
-                    votenow = true;
-                    customCommand = "";
+                        chosen.clear();
+                        chosenActions.clear();
 
-                    globalVotes.clear();
-                    votes.clear();
+                        ArrayList arr = (ArrayList) commandsConfig.getList("arr");
 
-                    chosen.clear();
-                    chosenActions.clear();
+                        for (int i = 0; i < 3; i++) {
+                            int ran = rand.nextInt(Objects.requireNonNull(arr).size());
 
-                    ArrayList arr = (ArrayList) commandsConfig.getList("arr");
+                            HashMap hash = (HashMap) arr.get(ran);
 
+                            chosen.add(hash.get("name").toString());
+                            chosenActions.add(hash.get("action").toString());
 
-                    for (int i = 0; i < 3; i++) {
-                        int ran = rand.nextInt(Objects.requireNonNull(arr).size());
+                            votes.add(String.valueOf(0));
+                            if (!p.getConfig().getBoolean("ingame.hide")) {
+                                update(i, 0);
+                            } else {
+                                Bot.send((i + 1) + ". " + chosen.get(i));
+                            }
+                        }
 
-                        HashMap hash = (HashMap) arr.get(ran);
+                        for (Team team : board.getTeams()) {
+                            team.setSuffix(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1));
+                        }
+                        scheduler.scheduleSyncDelayedTask(p, results, p.getConfig().getInt("vote.time") * 20L);
+                    };
 
-                        chosen.add(hash.get("name").toString());
-                        chosenActions.add(hash.get("action").toString());
+                    long period = (p.getConfig().getInt("vote.delay") + p.getConfig().getInt("vote.time")) * 20L;
+                    Runnable starting = () -> scheduler.scheduleSyncRepeatingTask(p, voting, 0L, period);
+                    scheduler.scheduleSyncDelayedTask(p, starting, 200L);
 
-                        votes.add(String.valueOf(0));
-                        update(i, 0);
+                    if (!p.getConfig().getBoolean("ingame.hide")) {
+                        board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
 
-                        if (hide) {
-                            Bot.send((i + 1) + ". " + chosen.get(i));
+                        Objective minetwitch = board.registerNewObjective("minetwitch", "", prefix);
+                        minetwitch.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+                        for (int i = 1; i < 4; i++) {
+                            Team t;
+                            t = board.registerNewTeam(i + ". ");
+                            t.addEntry(i + ". ");
+                            t.setSuffix("Loading...");
+                            minetwitch.getScore(i + ". ").setScore(0);
                         }
                     }
 
-                    for (Team team : board.getTeams()) {
-                        team.setSuffix(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1));
-                    }
-                    scheduler.scheduleSyncDelayedTask(p, results, convertToLong(config.getInt("time")));
-                };
-
-                Runnable starting = () -> scheduler.scheduleSyncRepeatingTask(p, voting, 0L, convertToLong(config.getInt("delay") + config.getInt("time")));
-
-                scheduler.scheduleSyncDelayedTask(p, starting, 200L);
-
-
-                ScoreboardManager m = Bukkit.getScoreboardManager();
-                board = m != null ? m.getMainScoreboard() : null;
-
-                minetwitch = board != null ? board.registerNewObjective("minetwitch", "", prefix) : null;
-
-                if (!hide) {
-                    if (minetwitch != null) {
-                        minetwitch.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    }
+                    Bukkit.broadcastMessage(prefix + " Loaded, waiting 10 seconds");
+                } else {
+                    enabled = false;
+                    disable();
                 }
-
-                for (int i = 1; i < 4; i++) {
-                    if (board != null) {
-                        Team t;
-                        t = board.registerNewTeam(i + ". ");
-                        t.addEntry(i + ". ");
-                        t.setSuffix("Loading...");
-                        minetwitch.getScore(i + ". ").setScore(0);
-                    }
-                }
-
-                Bukkit.broadcastMessage(prefix + " Loaded, waiting 10 seconds");
-            } else {
-                enabled = false;
-                disable();
             }
         } else {
             sender.sendMessage(prefix + " You have to be OP to use this command");
         }
         return true;
-    }
-
-    private long convertToLong(int i) {
-        return i * 20L;
     }
 
     private int getWinning() {
@@ -157,6 +147,6 @@ public class CommandMinetwitch implements CommandExecutor {
 
     static void update(int n, int val){
         n++;
-        minetwitch.getScore(n + ". ").setScore(val);
+        Objects.requireNonNull(board.getObjective("minetwitch")).getScore(n + ". ").setScore(val);
     }
 }
