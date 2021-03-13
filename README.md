@@ -1,61 +1,90 @@
-
-<img src="https://github.com/risbun/MineTwitch/blob/master/docs/MineTwitchWordmark.png?raw=true" style="width:100%;">
+![MineTwitch](https://github.com/risbun/MineTwitch/blob/master/docs/MineTwitchWordmark.png?raw=true)
 
 # MineTwitch
 
 MineTwitch is a Minecraft Twitch Integration.
 
-Every minute<a href="#note1">¹</a> viewers can vote on command they want to happen ingame.
-<br>
-After 15 seconds<a href="#note1">¹</a> the command with the most votes will be executed and ran on all players (Multiplayer Compatible).
-<br>
+Every minute viewers can vote on command they want to happen ingame.\
+After 15 seconds the command with the most votes will be executed and ran on all players (Multiplayer Compatible).\
 The command could either be bad or good. It's all up to the viewers.
 
 // add screenshots here
 
 # Getting started
 
-<ol>
-	<li><a href="https://github.com/risbun/MineTwitch/releases">Download</a> the latest plugin</li>
-	<li>Put the plugin jar inside the plugins folder of your Spigot powered server (If you want to play this in singleplayer you can create a local server by following <a href="https://www.youtube.com/watch?v=ez2NgYtcaNc">this guide</a>).</li>
-	<li>Now start your server up. When it's done loading (you should see a "Done (13.37s)" in the console) continue to the next step.</li>
-	<li>Go to the plugins folder in the server directory. Here there should be a new folder named "MineTwitch" with two files inside, config.yml and commands.json. Open the config.yml file.</li>
-	<li>Go to <a href="https://twitchapps.com/tmi/">this site</a> in a browser and acquire a oauth token. Put this token in the config file after <pre>ouath:</pre>Example: <pre>ouath: 'g534uy5g3u4y5g3o4634f6o346t3fu'</pre></li>
-	<li>Type in the name of the account you used when acquiring the oauth token after <pre>username:</pre>Example: <pre>username: 'iReeZBot'</pre></li>
-	<li>Type in your Twitch channels name (can be the same as your username) after <pre>channel:</pre>Example: <pre>channel: 'iReeZey'</pre></li>
-	<li>Save the file, go to your server terminal and type <pre>/mtreload</pre></li>
-	<li>Open up Minecraft and connect to your server.</li>
-	<li>When you are ready, type this command in chat: <pre>/mt</pre></li>
-</ol>
+* [Download](https://github.com/risbun/MineTwitch/releases) the latest plugin
+* Put the plugin jar inside the plugins folder of your Spigot powered server (If you want to play this in singleplayer you can create a local server by following [this guide](https://www.youtube.com/watch?v=ez2NgYtcaNc)).
+* Now start your server up. When it's done loading (you should see a "Done (13.37s)" in the console) continue to the next step.
+* Go to the plugins folder in the server directory. Here there should be a new folder named "MineTwitch" with two files inside, config.yml and commands.json. Open the config.yml file.
+* Go to [this site](https://twitchapps.com/tmi/) in a browser and acquire a oauth token. Put this token in the config file after `oauth:`\
+  ```
+  oauth: 'oauth:g534uy5g3u4y5g3o4634f6o346t3fu'
+  ```
+* Type in the name of the account you used when acquiring the oauth token after `username:`\
+  ```
+  username: 'iReeZBot'
+  ```
+* Type in your Twitch channels name (can be the same as your username) after `channels:` on a new line:
+  ```
+  channels:
+  - 'iReeZey'
+  ```
+  - If you want to vote from multiple channels you can add them using this syntax:
+    ```
+    channels:
+    - 'iReeZey'
+    - 'ThaCheeseBun'
+    ```
+* Save the file, go to your server terminal and type `/mt reload`
+* Open up Minecraft and connect to your server.
+* When you are ready, type this command in chat: `/mt`
 
 # Config
-<h4> CHAT BOT </h4>
+**CHAT BOT**
 
-Bot oauth token:
-<pre>oauth: 'oauth:xxxx'</pre>
+Bot OAuth token:
+```
+oauth: 'oauth:xxxx'
+```
 
 Bot username:
-<pre>username: 'examplename'</pre>
+```
+username: 'examplename'
+```
 
-Twitch channel:
-<pre>channel: 'examplechannel'</pre>
+Twitch channels:
+```
+channels:
+- 'examplechannel'
+- 'otherchannel'
+```
 
-<h4 name="note1"> GENERAL SETTINGS </h4>
+**VOTE SETTINGS**
 
-Vote delay (amount of time between vote end and next vote) in seconds
-<pre>delay: (Default 60)</pre>
+Delay between vote end and next vote in seconds
+```
+vote: 60
+```
+    
+Amount of time viewers have to vote in seconds
+```
+time: 15
+```
 
-Vote time (amount of time viewers have to vote) in seconds
-<pre>time: (Default 15)</pre>
+**INGAME SETTINGS**
 
 Hide commands from ingame (commands will be sent in twitch chat, might be hard to catch up for large streamers)
-<pre>hide: (Default false)</pre>
+```
+hide: false
+```
 
-Show Twitch chat in your ingame chat
-<pre>chat: (Default true)</pre>
+Show Twitch chat in your ingame chat (half not working for multiple channels)
+```
+chat: true
+```
 
 # Custom commands
 
 custom commands guide coming soon™
 
-## Copyright &copy; 2020 - MineTwitch Authors, Twitch Logo &copy; 2020 Twitch, Minecraft Logo &copy; 2020 Mojang
+## Copyright &copy; 2021 - MineTwitch Authors, Twitch Logo &copy; 2021 Twitch, Minecraft Logo &copy; 2021 Mojang
