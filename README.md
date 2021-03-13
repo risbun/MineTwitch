@@ -16,11 +16,11 @@ The command could either be bad or good. It's all up to the viewers.
 * Put the plugin jar inside the plugins folder of your Spigot powered server (If you want to play this in singleplayer you can create a local server by following [this guide](https://www.youtube.com/watch?v=ez2NgYtcaNc)).
 * Now start your server up. When it's done loading (you should see a "Done (13.37s)" in the console) continue to the next step.
 * Go to the plugins folder in the server directory. Here there should be a new folder named "MineTwitch" with two files inside, config.yml and commands.json. Open the config.yml file.
-* Go to [this site](https://twitchapps.com/tmi/) in a browser and acquire a oauth token. Put this token in the config file after `oauth:`\
+* Go to [this site](https://twitchapps.com/tmi/) in a browser and acquire a oauth token. Put this token in the config file after `oauth:`
   ```
   oauth: 'oauth:g534uy5g3u4y5g3o4634f6o346t3fu'
   ```
-* Type in the name of the account you used when acquiring the oauth token after `username:`\
+* Type in the name of the account you used when acquiring the oauth token after `username:`
   ```
   username: 'iReeZBot'
   ```
