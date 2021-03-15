@@ -2,6 +2,7 @@ package com.github.risbun.minetwitch;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
+import com.github.risbun.minetwitch.commands.CommandMinetwitch;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import org.bukkit.Bukkit;
@@ -13,8 +14,8 @@ import java.util.Objects;
 import static com.github.risbun.minetwitch.Main.*;
 import static com.github.risbun.minetwitch.Main.twitchClient;
 
-class Bot {
-    static void load(TwitchClient twitchClient){
+public class Bot {
+    public static void load(TwitchClient twitchClient){
         Bot s = new Bot();
         s.run(twitchClient);
     }
@@ -66,7 +67,7 @@ class Bot {
         }
     }
 
-    static void send(String text) {
+    public static void send(String text) {
         List<String> channels = p.getConfig().getStringList("bot.channels");
         for (String chl : channels) {
             twitchClient.getChat().sendMessage(chl, text);

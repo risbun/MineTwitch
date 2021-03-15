@@ -1,5 +1,7 @@
 package com.github.risbun.minetwitch;
 
+import com.github.risbun.minetwitch.commands.CommandMinetwitch;
+import com.github.risbun.minetwitch.commands.CommandTest;
 import com.github.twitch4j.TwitchClient;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,26 +20,32 @@ import java.util.List;
 import java.util.Objects;
 
 public class Main extends JavaPlugin implements Listener {
-    static Scoreboard board;
-    static List<String> globalVotes = new ArrayList<>();
-    static List<String> votes = new ArrayList<>();
-    static List<String> chosen = new ArrayList<>();
-    static List<String> chosenActions = new ArrayList<>();
-    static String customCommand = "";
-    static boolean votenow = false;
-    static boolean enabled = false;
-    static Plugin p = null;
-    static TwitchClient twitchClient = null;
-    static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
-    static FileConfiguration commandsConfig;
+    public static Scoreboard board;
+    public static List<String> globalVotes = new ArrayList<>();
+    public static List<String> votes = new ArrayList<>();
+    public static List<String> chosen = new ArrayList<>();
+    public static List<String> chosenActions = new ArrayList<>();
+    public static String customCommand = "";
+    public static boolean votenow = false;
+    public static boolean enabled = false;
+    public static Plugin p = null;
+    public static TwitchClient twitchClient = null;
+    public static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
+    public static FileConfiguration commandsConfig;
+
+    public static ClassLoader classLoader;
 
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new Events(), this);
+
         p = this;
+        classLoader = this.getClassLoader();
+
         Bukkit.broadcastMessage(prefix + " Type /mt to start MineTwitch.\n\nFirst time? Go to /plugins/MineTwitch/config.yml and setup the plugin");
 
         Objects.requireNonNull(this.getCommand("minetwitch")).setExecutor(new CommandMinetwitch());
+        Objects.requireNonNull(this.getCommand("Test")).setExecutor(new CommandTest());
 
         this.saveDefaultConfig();
 
@@ -54,7 +62,7 @@ public class Main extends JavaPlugin implements Listener {
         disable();
     }
 
-    static void disable() {
+    public static void disable() {
         customCommand = "";
 
         for (Team team : board.getTeams()) {

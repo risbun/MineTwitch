@@ -7,3 +7,6 @@ commands:
     aliases: mt
     description: MineTwitch
     usage: /minetwitch
+  test:
+    description: testing commands
+    usage: /test

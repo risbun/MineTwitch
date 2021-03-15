@@ -1,7 +1,10 @@
-package com.github.risbun.minetwitch;
+package com.github.risbun.minetwitch.commands;
 
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
+import com.github.risbun.minetwitch.Bot;
+import com.github.risbun.minetwitch.interfaces.CustomPlugin;
 import com.github.twitch4j.TwitchClientBuilder;
+import com.google.common.reflect.ClassPath;
 import org.bukkit.Bukkit;
 
 import org.bukkit.command.Command;
@@ -13,10 +16,11 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Random;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
 import static com.github.risbun.minetwitch.Main.*;
@@ -149,7 +153,7 @@ public class CommandMinetwitch implements CommandExecutor {
         return largest;
     }
 
-    static void update(int n, int val){
+    public static void update(int n, int val){
         n++;
         Objects.requireNonNull(board.getObjective("minetwitch")).getScore(n + ". ").setScore(val);
     }

@@ -18,6 +18,10 @@ import static com.github.risbun.minetwitch.Main.*;
 
 public class Events implements Listener
 {
+    /*
+
+    currently disaled due to outdated.
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if (event.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) return;
@@ -50,4 +54,5 @@ public class Events implements Listener
         }
         return blocks;
     }
+     */
 }

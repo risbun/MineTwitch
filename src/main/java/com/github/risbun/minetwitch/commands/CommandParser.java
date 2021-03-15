@@ -1,25 +1,17 @@
-package com.github.risbun.minetwitch;
+package com.github.risbun.minetwitch.commands;
 
+import com.github.risbun.minetwitch.interfaces.CustomPlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
-import java.util.Objects;
+import java.lang.reflect.InvocationTargetException;
 
+import static com.github.risbun.minetwitch.Main.classLoader;
+import static com.github.risbun.minetwitch.Main.p;
 import static org.bukkit.Bukkit.getScheduler;
 import static org.bukkit.Bukkit.getServer;
-import static com.github.risbun.minetwitch.Main.*;
 
-class CommandParser {
-    void send(String alias, String command){
+public class CommandParser {
+    public void send(String alias, String command){
         if(!command.startsWith("custom")){
             sendCommand(command);
             if(command.startsWith("give")){
@@ -28,13 +20,26 @@ class CommandParser {
             }
         }else{
             String c = command.split(" ")[1];
+
+            CustomPlugin ClassToRun = null;
+            try {
+                ClassToRun = classLoader
+                        .loadClass("com.github.risbun.minetwitch.customplugin." + c)
+                        .asSubclass(CustomPlugin.class).getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
+            if(ClassToRun != null){
+                ClassToRun.run();
+                getScheduler().scheduleSyncDelayedTask(p, ClassToRun::revert, 600L);
+            }
+
+            /*
             switch (c) {
-                case "gravity":
-                    customCommand = c;
-                    break;
                 case "burn":
-                    for (Entity e : Bukkit.getOnlinePlayers()) {
-                        e.setFireTicks(100);
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.setFireTicks(100);
                     }
                     break;
                 case "creeper":
@@ -104,13 +109,14 @@ class CommandParser {
                     }
                     break;
             }
+             */
         }
     }
 
-    void sendCommand(String command){
+    public static void sendCommand(String command){
         getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
     }
-    void sendAllCommand(String command){
+    public static void sendAllCommand(String command){
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at @a run " + command);
     }
 }
