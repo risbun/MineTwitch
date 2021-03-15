@@ -81,6 +81,8 @@ public class CommandMinetwitch implements CommandExecutor {
 
                         ArrayList arr = (ArrayList) commandsConfig.getList("arr");
 
+                        boolean hide = p.getConfig().getBoolean("ingame.hide");
+
                         for (int i = 0; i < 3; i++) {
                             int ran = rand.nextInt(Objects.requireNonNull(arr).size());
 
@@ -90,15 +92,17 @@ public class CommandMinetwitch implements CommandExecutor {
                             chosenActions.add(hash.get("action").toString());
 
                             votes.add(String.valueOf(0));
-                            if (!p.getConfig().getBoolean("ingame.hide")) {
-                                update(i, 0);
-                            } else {
+                            if (hide) {
                                 Bot.send((i + 1) + ". " + chosen.get(i));
+                            } else {
+                                update(i, 0);
                             }
                         }
 
-                        for (Team team : board.getTeams()) {
-                            team.setSuffix(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1));
+                        if (!hide) {
+                            for (Team team : board.getTeams()) {
+                                team.setSuffix(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1));
+                            }
                         }
                         scheduler.scheduleSyncDelayedTask(p, results, p.getConfig().getInt("vote.time") * 20L);
                     };
