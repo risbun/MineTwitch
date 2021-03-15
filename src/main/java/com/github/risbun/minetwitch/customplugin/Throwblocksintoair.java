@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
-public abstract class Throwblocksintoair implements CustomPlugin {
+public class Throwblocksintoair implements CustomPlugin {
     @Override
     public boolean run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
@@ -32,5 +32,10 @@ public abstract class Throwblocksintoair implements CustomPlugin {
             }
         }
         return false;
+    }
+
+    @Override
+    public void revert() {
+
     }
 }

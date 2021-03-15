@@ -6,7 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public abstract class CreeperSound implements CustomPlugin {
+public class CreeperSound implements CustomPlugin {
     @Override
     public boolean run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
@@ -14,5 +14,10 @@ public abstract class CreeperSound implements CustomPlugin {
             p.playSound(p.getLocation().add(inverseDirectionVec), Sound.ENTITY_CREEPER_PRIMED, 1, 1);
         }
         return false;
+    }
+
+    @Override
+    public void revert() {
+
     }
 }

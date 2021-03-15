@@ -3,7 +3,7 @@ package com.github.risbun.minetwitch.customplugin;
 import com.github.risbun.minetwitch.commands.CommandParser;
 import com.github.risbun.minetwitch.interfaces.CustomPlugin;
 
-public abstract class Portal implements CustomPlugin {
+public class Portal implements CustomPlugin {
     @Override
     public boolean run() {
         CommandParser.sendAllCommand("fill ~-1 ~-1 ~ ~2 ~3 ~ minecraft:obsidian");
@@ -11,5 +11,10 @@ public abstract class Portal implements CustomPlugin {
         CommandParser.sendAllCommand("setblock ~ ~ ~ fire");
 
         return false;
+    }
+
+    @Override
+    public void revert() {
+
     }
 }
