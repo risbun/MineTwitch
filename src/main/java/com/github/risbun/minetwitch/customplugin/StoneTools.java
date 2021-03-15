@@ -8,9 +8,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
-public class StoneTools implements CustomPlugin {
+public abstract class StoneTools implements CustomPlugin {
     @Override
-    public void run() {
+    public boolean run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             for (ItemStack i : p.getInventory()) {
                 if (i == null) continue;
@@ -22,10 +22,7 @@ public class StoneTools implements CustomPlugin {
                 }
             }
         }
-    }
 
-    @Override
-    public void revert() {
-
+        return false;
     }
 }

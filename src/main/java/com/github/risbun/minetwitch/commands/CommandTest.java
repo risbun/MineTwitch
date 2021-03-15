@@ -25,8 +25,8 @@ public class CommandTest implements CommandExecutor {
         }
 
         if(ClassToRun != null){
-            ClassToRun.run();
-            getScheduler().scheduleSyncDelayedTask(p, ClassToRun::revert, 600L);
+            if(ClassToRun.run())
+                getScheduler().scheduleSyncDelayedTask(p, ClassToRun::revert, 600L);
         }else{
             sender.sendMessage("Class not found... " + args[0]);
         }

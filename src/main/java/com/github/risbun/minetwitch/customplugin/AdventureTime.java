@@ -7,10 +7,11 @@ import org.bukkit.entity.Player;
 
 public class AdventureTime implements CustomPlugin {
     @Override
-    public void run() {
+    public boolean run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.setGameMode(GameMode.ADVENTURE);
         }
+        return true;
     }
 
     @Override

@@ -12,13 +12,15 @@ import org.bukkit.inventory.PlayerInventory;
 public class PumpkinOnHead implements CustomPlugin {
 
     @Override
-    public void run() {
+    public boolean run() {
         for(Player p : Bukkit.getOnlinePlayers()){
             ItemStack pumpkin = new ItemStack(Material.CARVED_PUMPKIN);
             pumpkin.addEnchantment(Enchantment.BINDING_CURSE, 1);
 
             p.getInventory().setHelmet(pumpkin);
         }
+
+        return true;
     }
 
     @Override
