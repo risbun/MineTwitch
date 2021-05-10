@@ -1,6 +1,9 @@
 package com.github.risbun.minetwitch.interfaces;
 
-public interface CustomPlugin {
+import org.bukkit.event.Listener;
+
+public interface CustomPlugin extends Listener {
     boolean run();
     void revert();
 }
+

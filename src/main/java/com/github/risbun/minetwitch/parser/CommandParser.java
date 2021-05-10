@@ -1,4 +1,4 @@
-package com.github.risbun.minetwitch.commands;
+package com.github.risbun.minetwitch.parser;
 
 import com.github.risbun.minetwitch.interfaces.CustomPlugin;
 import org.bukkit.Bukkit;
@@ -21,19 +21,22 @@ public class CommandParser {
         }else{
             String c = command.split(" ")[1];
 
-            CustomPlugin ClassToRun = null;
-            try {
-                ClassToRun = classLoader
-                        .loadClass("com.github.risbun.minetwitch.customplugin." + c)
-                        .asSubclass(CustomPlugin.class).getDeclaredConstructor().newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if(ClassToRun != null && ClassToRun.run()){
-                getScheduler().scheduleSyncDelayedTask(p, ClassToRun::revert, 600L);
-            }
+            runCustom(c);
         }
+    }
+
+    public static void runCustom(String c) {
+        CustomPlugin ClassToRun = null;
+        try {
+            ClassToRun = classLoader
+                    .loadClass("com.github.risbun.minetwitch.customplugin." + c)
+                    .asSubclass(CustomPlugin.class).getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(ClassToRun != null && ClassToRun.run())
+            getScheduler().scheduleSyncDelayedTask(p, ClassToRun::revert, 600L);
     }
 
     public static void sendCommand(String command){

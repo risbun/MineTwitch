@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class CreeperSound implements CustomPlugin {
+
     @Override
     public boolean run() {
         for (Player p : Bukkit.getOnlinePlayers()) {

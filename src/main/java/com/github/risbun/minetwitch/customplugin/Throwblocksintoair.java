@@ -12,6 +12,7 @@ import org.bukkit.util.Vector;
 import java.util.Objects;
 
 public class Throwblocksintoair implements CustomPlugin {
+
     @Override
     public boolean run() {
         for (Player p : Bukkit.getOnlinePlayers()) {

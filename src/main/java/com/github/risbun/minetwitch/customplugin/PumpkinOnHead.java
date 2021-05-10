@@ -1,6 +1,5 @@
 package com.github.risbun.minetwitch.customplugin;
 
-import com.github.risbun.minetwitch.commands.CommandParser;
 import com.github.risbun.minetwitch.interfaces.CustomPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

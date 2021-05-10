@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class BurnPlayers implements CustomPlugin {
+
     @Override
     public boolean run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
