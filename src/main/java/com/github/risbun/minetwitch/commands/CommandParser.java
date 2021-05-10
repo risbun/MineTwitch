@@ -26,13 +26,12 @@ public class CommandParser {
                 ClassToRun = classLoader
                         .loadClass("com.github.risbun.minetwitch.customplugin." + c)
                         .asSubclass(CustomPlugin.class).getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            if(ClassToRun != null){
-                if(ClassToRun.run())
-                    getScheduler().scheduleSyncDelayedTask(p, ClassToRun::revert, 600L);
+            if(ClassToRun != null && ClassToRun.run()){
+                getScheduler().scheduleSyncDelayedTask(p, ClassToRun::revert, 600L);
             }
         }
     }
