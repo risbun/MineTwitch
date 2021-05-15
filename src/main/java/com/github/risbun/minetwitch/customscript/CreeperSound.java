@@ -1,12 +1,12 @@
-package com.github.risbun.minetwitch.customplugin;
+package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.interfaces.CustomPlugin;
+import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class CreeperSound implements CustomPlugin {
+public class CreeperSound implements CustomScript {
 
     @Override
     public boolean run() {

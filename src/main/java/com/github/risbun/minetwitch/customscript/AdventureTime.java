@@ -1,11 +1,11 @@
-package com.github.risbun.minetwitch.customplugin;
+package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.interfaces.CustomPlugin;
+import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class AdventureTime implements CustomPlugin {
+public class AdventureTime implements CustomScript {
 
     @Override
     public boolean run() {

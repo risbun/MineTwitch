@@ -1,9 +1,9 @@
-package com.github.risbun.minetwitch.customplugin;
+package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.parser.CommandParser;
-import com.github.risbun.minetwitch.interfaces.CustomPlugin;
+import com.github.risbun.minetwitch.interfaces.CustomScript;
 
-public class Portal implements CustomPlugin {
+public class Portal implements CustomScript {
 
     @Override
     public boolean run() {

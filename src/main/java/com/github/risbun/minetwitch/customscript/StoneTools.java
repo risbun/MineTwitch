@@ -1,6 +1,6 @@
-package com.github.risbun.minetwitch.customplugin;
+package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.interfaces.CustomPlugin;
+import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
-public class StoneTools implements CustomPlugin {
+public class StoneTools implements CustomScript {
 
     @Override
     public boolean run() {

@@ -1,10 +1,10 @@
-package com.github.risbun.minetwitch.customplugin;
+package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.interfaces.CustomPlugin;
+import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class BurnPlayers implements CustomPlugin {
+public class BurnPlayers implements CustomScript {
 
     @Override
     public boolean run() {

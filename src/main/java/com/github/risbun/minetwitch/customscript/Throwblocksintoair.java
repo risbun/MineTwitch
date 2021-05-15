@@ -1,6 +1,6 @@
-package com.github.risbun.minetwitch.customplugin;
+package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.interfaces.CustomPlugin;
+import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
-public class Throwblocksintoair implements CustomPlugin {
+public class Throwblocksintoair implements CustomScript {
 
     @Override
     public boolean run() {

@@ -1,9 +1,7 @@
 package com.github.risbun.minetwitch.parser;
 
-import com.github.risbun.minetwitch.interfaces.CustomPlugin;
+import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
-
-import java.lang.reflect.InvocationTargetException;
 
 import static com.github.risbun.minetwitch.Main.classLoader;
 import static com.github.risbun.minetwitch.Main.p;
@@ -26,11 +24,11 @@ public class CommandParser {
     }
 
     public static void runCustom(String c) {
-        CustomPlugin ClassToRun = null;
+        CustomScript ClassToRun = null;
         try {
             ClassToRun = classLoader
                     .loadClass("com.github.risbun.minetwitch.customplugin." + c)
-                    .asSubclass(CustomPlugin.class).getDeclaredConstructor().newInstance();
+                    .asSubclass(CustomScript.class).getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
