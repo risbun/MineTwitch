@@ -27,7 +27,7 @@ public class CommandParser {
         CustomScript ClassToRun = null;
         try {
             ClassToRun = classLoader
-                    .loadClass("com.github.risbun.minetwitch.customplugin." + c)
+                    .loadClass("com.github.risbun.minetwitch.customscript." + c)
                     .asSubclass(CustomScript.class).getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
