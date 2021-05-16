@@ -8,7 +8,7 @@ Every minute viewers can vote on command they want to happen ingame.\
 After 15 seconds the command with the most votes will be executed and ran on all players (Multiplayer Compatible).\
 The command could either be bad or good. It's all up to the viewers.
 
-// add screenshots here
+// hej
 
 # Getting started
 
