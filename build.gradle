@@ -8,17 +8,15 @@ plugins {
 group 'com.github.risbun'
 version '1.1.1'
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = '1.16'
+targetCompatibility = '1.16'
 
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
-    jcenter()
     maven {
-        name = 'spigotmc-repo'
-        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        url 'https://papermc.io/repo/repository/maven-public/'
     }
     maven {
         name = 'sonatype'
@@ -27,11 +25,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
     implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.2.1'
 }
 
 processResources {
+    duplicatesStrategy = 'include'
+
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }

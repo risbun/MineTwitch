@@ -2,13 +2,13 @@ package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.block.BlockBreakEvent;
 
-public class CreeperSound implements CustomScript {
+import static com.github.risbun.minetwitch.Main.p;
 
+public class NoDrops implements CustomScript {
     @Override
     public AnnounceLevel getAnnounceLevel() {
         return null;
@@ -21,20 +21,22 @@ public class CreeperSound implements CustomScript {
 
     @Override
     public boolean run() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            Vector inverseDirectionVec = p.getLocation().getDirection().normalize().multiply(-2);
-            p.playSound(p.getLocation().add(inverseDirectionVec), Sound.ENTITY_CREEPER_PRIMED, 1, 1);
-        }
-        return false;
+        p.getServer().getPluginManager().registerEvents(this, p);
+        return true;
     }
 
     @Override
     public void revert() {
-
+        HandlerList.unregisterAll(this);
     }
 
     @Override
     public void announceEnd() {
 
+    }
+
+    @EventHandler
+    public void onPlayerInteraction(BlockBreakEvent e){
+        e.setDropItems(false);
     }
 }

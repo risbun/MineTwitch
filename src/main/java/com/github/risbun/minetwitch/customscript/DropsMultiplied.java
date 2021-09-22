@@ -2,13 +2,20 @@ package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
+import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
+
+import java.util.Random;
 
 import static com.github.risbun.minetwitch.Main.p;
 
-public class Freeze implements CustomScript {
+public class DropsMultiplied implements CustomScript {
+
+    Random random = new Random();
+    int maxMultiplicationCount = 10;
+
     @Override
     public AnnounceLevel getAnnounceLevel() {
         return null;
@@ -36,7 +43,9 @@ public class Freeze implements CustomScript {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e){
-        e.setCancelled(true);
+    public void onPlayerInteraction(BlockDropItemEvent e){
+        for(Item i : e.getItems()){
+            i.getItemStack().setAmount(random.nextInt(maxMultiplicationCount));
+        }
     }
 }

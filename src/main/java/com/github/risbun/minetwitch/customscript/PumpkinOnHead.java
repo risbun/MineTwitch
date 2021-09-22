@@ -1,5 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
+import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -9,6 +10,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class PumpkinOnHead implements CustomScript {
+
+    @Override
+    public AnnounceLevel getAnnounceLevel() {
+        return null;
+    }
+
+    @Override
+    public void announceStart() {
+
+    }
 
     @Override
     public boolean run() {
@@ -28,5 +39,10 @@ public class PumpkinOnHead implements CustomScript {
             PlayerInventory iv = p.getInventory();
             iv.setHelmet(null);
         }
+    }
+
+    @Override
+    public void announceEnd() {
+
     }
 }

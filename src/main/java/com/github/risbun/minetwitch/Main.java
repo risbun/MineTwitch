@@ -37,8 +37,6 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new Events(), this);
-
         p = this;
         classLoader = this.getClassLoader();
 
