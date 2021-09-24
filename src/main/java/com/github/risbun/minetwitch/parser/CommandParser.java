@@ -1,5 +1,6 @@
 package com.github.risbun.minetwitch.parser;
 
+import com.github.risbun.minetwitch.Main;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
@@ -15,7 +16,7 @@ public class CommandParser {
         if(!command.startsWith("custom")){
             sendCommand(command);
             if(command.startsWith("give")){
-                Bukkit.broadcastMessage(alias);
+                Main.announceAll(alias);
                 sendCommand("title @a title \"" +alias+"\"");
             }
         }else{
@@ -56,7 +57,7 @@ public class CommandParser {
                 if(level.equals(AnnounceLevel.End) || level.equals(AnnounceLevel.Both)) ClassToRun.announceEnd();
             }
         };
-    };
+    }
 
     public void sendCommand(String command){
         getServer().dispatchCommand(Bukkit.getConsoleSender(), command);

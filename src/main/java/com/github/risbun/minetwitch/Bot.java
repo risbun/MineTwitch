@@ -5,7 +5,6 @@ import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.risbun.minetwitch.commands.CommandMinetwitch;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.util.List;

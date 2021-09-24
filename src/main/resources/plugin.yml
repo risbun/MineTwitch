@@ -7,6 +7,8 @@ commands:
     aliases: mt
     description: MineTwitch
     usage: /minetwitch
+    permission: op
   test:
     description: testing commands
     usage: /test
+    permission: op

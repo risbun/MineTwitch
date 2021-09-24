@@ -4,6 +4,7 @@ import com.github.risbun.minetwitch.commands.CommandMinetwitch;
 import com.github.risbun.minetwitch.commands.CommandTest;
 import com.github.twitch4j.TwitchClient;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class Main extends JavaPlugin implements Listener {
     public static Scoreboard board;
@@ -42,7 +44,7 @@ public class Main extends JavaPlugin implements Listener {
         p = this;
         classLoader = this.getClassLoader();
 
-        Bukkit.broadcastMessage(prefix + " Type /mt to start MineTwitch.\n\nFirst time? Go to /plugins/MineTwitch/config.yml and setup the plugin");
+        announceAll(prefix + " Type /mt to start MineTwitch.\n\nFirst time? Go to /plugins/MineTwitch/config.yml and setup the plugin");
 
         Objects.requireNonNull(this.getCommand("minetwitch")).setExecutor(new CommandMinetwitch());
         Objects.requireNonNull(this.getCommand("Test")).setExecutor(new CommandTest());
@@ -73,7 +75,7 @@ public class Main extends JavaPlugin implements Listener {
         }
 
         Bukkit.getScheduler().cancelTasks(p);
-        Bukkit.broadcastMessage(prefix + " Disabled");
+        Main.announceAll(prefix + " Disabled");
     }
 
     private void CreateCommandJSON() {
@@ -95,6 +97,7 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public static void announceAll(Component message){
+        Main.p.getServer().getLogger().log(Level.INFO, ((TextComponent) message).content());
         for(Player p : Bukkit.getOnlinePlayers()){
             p.sendMessage(message);
         }
