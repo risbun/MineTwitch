@@ -8,48 +8,53 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ItemRain implements CustomScript {
+public class BlockRain implements CustomScript {
 
     int taskIndex;
-    float offset = 20;
+    float offset = 64;
 
     Random random = new Random();
-    List<Material> items;
+    List<Material> blocks = new ArrayList<>();
 
     @Override
     public AnnounceLevel getAnnounceLevel() {
-        return AnnounceLevel.Both;
+        return null;
     }
 
     @Override
     public void announceStart() {
-        Component comp = Component.text("Items have started falling from the sky!")
-                .color(TextColor.color(0, 255, 0));
-        Main.announceAll(comp);
+
     }
 
     @Override
     public boolean run() {
-        items = new ArrayList<>();
+
+        blocks.clear();
         for(Material mat : Material.values()){
-            if(mat.isItem()) items.add(mat);
+            if(mat.isBlock() && mat.isSolid()) blocks.add(mat);
         }
 
         taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.p, () -> {
             for(Player p : Bukkit.getOnlinePlayers()){
-                Location l = p.getLocation();
-                l.setY(255);
-                l.add((random.nextFloat() * offset) - offset / 2, 0, (random.nextFloat() * offset) - offset / 2);
+                Block b = p.getLocation().getBlock();
+                Location summon = b.getLocation();
+                summon.setY(255);
+                summon.add((random.nextFloat() * offset) - offset / 2, 0, (random.nextFloat() * offset) - offset / 2);
+                summon.add(new Vector(0.5f, 0, 0.5f));
 
-                ItemStack item = new ItemStack(items.get(random.nextInt(items.size())));
-                p.getWorld().dropItem(l, item);
+                Material mat = blocks.get(random.nextInt(blocks.size()));
+                p.getWorld().spawnFallingBlock(summon, mat.createBlockData());
             }
         }, 0L, 2L);
 
@@ -63,8 +68,6 @@ public class ItemRain implements CustomScript {
 
     @Override
     public void announceEnd() {
-        Component comp = Component.text("Items have stopped falling from the sky!")
-                .color(TextColor.color(255, 0, 0));
-        Main.announceAll(comp);
+
     }
 }

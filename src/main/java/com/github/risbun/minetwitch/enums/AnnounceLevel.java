@@ -1,7 +1,7 @@
 package com.github.risbun.minetwitch.enums;
 
 public enum AnnounceLevel {
-    Begin,
+    Start,
     End,
     Both
 }

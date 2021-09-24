@@ -35,17 +35,22 @@ public class CommandParser {
             e.printStackTrace();
         }
 
-        if(ClassToRun != null && ClassToRun.run()){
-            ClassToRun.announceStart();
-            getScheduler().scheduleSyncDelayedTask(p, revertClassToRun(ClassToRun), 600L);
+        if(ClassToRun == null) return;
+
+        AnnounceLevel level = ClassToRun.getAnnounceLevel();
+
+        if(level != null){
+            if(level.equals(AnnounceLevel.Start) || level.equals(AnnounceLevel.Both)) ClassToRun.announceStart();
+        }
+
+        if(ClassToRun.run()){
+            getScheduler().scheduleSyncDelayedTask(p, revertClassToRun(ClassToRun, level), 600L);
         }
     }
 
-    private static @NotNull Runnable revertClassToRun(CustomScript ClassToRun){
+    private static @NotNull Runnable revertClassToRun(CustomScript ClassToRun, AnnounceLevel level){
         return () -> {
             ClassToRun.revert();
-
-            AnnounceLevel level = ClassToRun.getAnnounceLevel();
 
             if(level != null){
                 if(level.equals(AnnounceLevel.End) || level.equals(AnnounceLevel.Both)) ClassToRun.announceEnd();

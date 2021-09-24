@@ -29,7 +29,7 @@ public class AdventureTime implements CustomScript {
     @Override
     public void revert() {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            p.setGameMode(GameMode.SURVIVAL);
+            if(p.getGameMode().equals(GameMode.ADVENTURE)) p.setGameMode(GameMode.SURVIVAL);
         }
     }
 

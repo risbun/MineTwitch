@@ -3,36 +3,42 @@ package com.github.risbun.minetwitch.customscript;
 import com.github.risbun.minetwitch.Main;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-public class BurnPlayers implements CustomScript {
+import java.util.HashMap;
+
+public class ShortSighted implements CustomScript {
+
+    HashMap<World, Integer> yep = new HashMap<>();
 
     @Override
     public AnnounceLevel getAnnounceLevel() {
-        return AnnounceLevel.Start;
+        return null;
     }
 
     @Override
     public void announceStart() {
-        Component comp = Component.text("BURN BABY BURN!")
-                .color(TextColor.color(255, 152, 0));
-        Main.announceAll(comp);
+
     }
 
     @Override
     public boolean run() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            p.setFireTicks(100);
+        yep.clear();
+        for(World w : Main.p.getServer().getWorlds()){
+            yep.put(w, w.getViewDistance());
+            w.setViewDistance(2);
         }
-        return false;
+
+        return true;
     }
 
     @Override
     public void revert() {
-
+        for(World w : yep.keySet()){
+            w.setViewDistance(yep.get(w));
+        }
     }
 
     @Override

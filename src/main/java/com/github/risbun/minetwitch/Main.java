@@ -3,11 +3,13 @@ package com.github.risbun.minetwitch;
 import com.github.risbun.minetwitch.commands.CommandMinetwitch;
 import com.github.risbun.minetwitch.commands.CommandTest;
 import com.github.twitch4j.TwitchClient;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -85,6 +87,16 @@ public class Main extends JavaPlugin implements Listener {
             commandsConfig.load(commandsFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void announceAll(String message){
+        announceAll(Component.text(message));
+    }
+
+    public static void announceAll(Component message){
+        for(Player p : Bukkit.getOnlinePlayers()){
+            p.sendMessage(message);
         }
     }
 }
