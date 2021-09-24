@@ -61,7 +61,7 @@ public class Bot {
                             }
                         }
                     }
-                    Bukkit.broadcastMessage(tag + event.getUser().getName() + ChatColor.WHITE + ": " + event.getMessage());
+                    Main.announceAll(tag + event.getUser().getName() + ChatColor.WHITE + ": " + event.getMessage());
                 }
             }
         }

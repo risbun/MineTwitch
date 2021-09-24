@@ -2,8 +2,10 @@ package com.github.risbun.minetwitch.commands;
 
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.risbun.minetwitch.Bot;
+import com.github.risbun.minetwitch.Main;
 import com.github.risbun.minetwitch.parser.CommandParser;
 import com.github.twitch4j.TwitchClientBuilder;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 
 import org.bukkit.command.Command;
@@ -33,7 +35,7 @@ public class CommandMinetwitch implements CommandExecutor {
                 if (!enabled) {
                     enabled = true;
 
-                    Bukkit.broadcastMessage(prefix + " Starting...");
+                    Main.announceAll(prefix + " Starting...");
                     BukkitScheduler scheduler = getServer().getScheduler();
                     OAuth2Credential oauth;
 
@@ -41,7 +43,7 @@ public class CommandMinetwitch implements CommandExecutor {
                     if (!oauthString.equals("oauth:xxxx")) {
                         oauth = new OAuth2Credential("twitch", oauthString);
                     } else {
-                        Bukkit.broadcastMessage(prefix + " OAuth in config not set, follow getting started on this page: https://risbun.github.io/MineTwitch/");
+                        Main.announceAll(prefix + " OAuth in config not set, follow getting started on this page: https://risbun.github.io/MineTwitch/");
                         enabled = false;
                         return true;
                     }
@@ -78,14 +80,14 @@ public class CommandMinetwitch implements CommandExecutor {
                         chosen.clear();
                         chosenActions.clear();
 
-                        ArrayList arr = (ArrayList) commandsConfig.getList("arr");
+                        ArrayList<?> arr = (ArrayList<?>) commandsConfig.getList("arr");
 
                         boolean hide = p.getConfig().getBoolean("ingame.hide");
 
                         for (int i = 0; i < 3; i++) {
                             int ran = rand.nextInt(Objects.requireNonNull(arr).size());
 
-                            HashMap hash = (HashMap) arr.get(ran);
+                            HashMap<?, ?> hash = (HashMap<?, ?>) arr.get(ran);
 
                             chosen.add(hash.get("name").toString());
                             chosenActions.add(hash.get("action").toString());
@@ -100,7 +102,7 @@ public class CommandMinetwitch implements CommandExecutor {
 
                         if (!hide) {
                             for (Team team : board.getTeams()) {
-                                team.setSuffix(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1));
+                                team.suffix(Component.text(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1)));
                             }
                         }
                         scheduler.scheduleSyncDelayedTask(p, results, p.getConfig().getInt("vote.time") * 20L);
@@ -113,19 +115,19 @@ public class CommandMinetwitch implements CommandExecutor {
                     if (!p.getConfig().getBoolean("ingame.hide")) {
                         board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
 
-                        Objective minetwitch = board.registerNewObjective("minetwitch", "", prefix);
+                        Objective minetwitch = board.registerNewObjective("minetwitch", "", Component.text(prefix));
                         minetwitch.setDisplaySlot(DisplaySlot.SIDEBAR);
 
                         for (int i = 1; i < 4; i++) {
                             Team t;
                             t = board.registerNewTeam(i + ". ");
                             t.addEntry(i + ". ");
-                            t.setSuffix("Loading...");
+                            t.suffix(Component.text("Loading..."));
                             minetwitch.getScore(i + ". ").setScore(0);
                         }
                     }
 
-                    Bukkit.broadcastMessage(prefix + " Loaded, waiting 10 seconds");
+                    Main.announceAll(prefix + " Loaded, waiting 10 seconds");
                 } else {
                     enabled = false;
                     disable();

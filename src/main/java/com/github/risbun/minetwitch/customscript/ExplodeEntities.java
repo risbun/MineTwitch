@@ -3,9 +3,7 @@ package com.github.risbun.minetwitch.customscript;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
-import org.bukkit.block.data.type.TNT;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;

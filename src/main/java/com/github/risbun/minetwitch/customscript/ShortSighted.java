@@ -3,9 +3,7 @@ package com.github.risbun.minetwitch.customscript;
 import com.github.risbun.minetwitch.Main;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
