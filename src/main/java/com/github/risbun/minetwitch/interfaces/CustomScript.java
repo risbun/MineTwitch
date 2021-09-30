@@ -4,11 +4,13 @@ import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import org.bukkit.event.Listener;
 
 public interface CustomScript extends Listener {
-    AnnounceLevel getAnnounceLevel();
+    default AnnounceLevel getAnnounceLevel() {
+        return null;
+    }
 
-    void announceStart();
+    default void announceStart() {}
     boolean run();
-    void revert();
-    void announceEnd();
+    default void revert() {}
+    default void announceEnd() {}
 }
 

@@ -43,7 +43,7 @@ public class ItemRain implements CustomScript {
         }
 
         taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.p, () -> {
-            for(Player p : Bukkit.getOnlinePlayers()){
+            for(Player p : Main.GetPlayers()){
                 Location l = p.getLocation();
                 l.setY(255);
                 l.add((random.nextFloat() * offset) - offset / 2, 0, (random.nextFloat() * offset) - offset / 2);

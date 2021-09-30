@@ -1,6 +1,5 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,16 +20,6 @@ public class RandomDrops implements CustomScript {
     List<Material> items;
 
     @Override
-    public AnnounceLevel getAnnounceLevel() {
-        return null;
-    }
-
-    @Override
-    public void announceStart() {
-
-    }
-
-    @Override
     public boolean run() {
         items = new ArrayList<>();
         for(Material mat : Material.values()){
@@ -44,11 +33,6 @@ public class RandomDrops implements CustomScript {
     @Override
     public void revert() {
         HandlerList.unregisterAll(this);
-    }
-
-    @Override
-    public void announceEnd() {
-
     }
 
     @EventHandler

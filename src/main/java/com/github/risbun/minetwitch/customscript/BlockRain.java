@@ -1,7 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.Main;
-import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,16 +22,6 @@ public class BlockRain implements CustomScript {
     List<Material> blocks = new ArrayList<>();
 
     @Override
-    public AnnounceLevel getAnnounceLevel() {
-        return null;
-    }
-
-    @Override
-    public void announceStart() {
-
-    }
-
-    @Override
     public boolean run() {
 
         blocks.clear();
@@ -41,7 +30,7 @@ public class BlockRain implements CustomScript {
         }
 
         taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.p, () -> {
-            for(Player p : Bukkit.getOnlinePlayers()){
+            for(Player p : Main.GetPlayers()){
                 Block b = p.getLocation().getBlock();
                 Location summon = b.getLocation();
                 summon.setY(255);
@@ -59,10 +48,5 @@ public class BlockRain implements CustomScript {
     @Override
     public void revert() {
         Bukkit.getScheduler().cancelTask(taskIndex);
-    }
-
-    @Override
-    public void announceEnd() {
-
     }
 }

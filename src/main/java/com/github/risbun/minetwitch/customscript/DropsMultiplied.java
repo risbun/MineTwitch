@@ -1,6 +1,5 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
@@ -17,16 +16,6 @@ public class DropsMultiplied implements CustomScript {
     int maxMultiplicationCount = 10;
 
     @Override
-    public AnnounceLevel getAnnounceLevel() {
-        return null;
-    }
-
-    @Override
-    public void announceStart() {
-
-    }
-
-    @Override
     public boolean run() {
         p.getServer().getPluginManager().registerEvents(this, p);
         return true;
@@ -35,11 +24,6 @@ public class DropsMultiplied implements CustomScript {
     @Override
     public void revert() {
         HandlerList.unregisterAll(this);
-    }
-
-    @Override
-    public void announceEnd() {
-
     }
 
     @EventHandler

@@ -1,8 +1,7 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.enums.AnnounceLevel;
+import com.github.risbun.minetwitch.Main;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -13,20 +12,9 @@ import org.bukkit.util.Vector;
 import java.util.Objects;
 
 public class YeetBlocks implements CustomScript {
-
-    @Override
-    public AnnounceLevel getAnnounceLevel() {
-        return AnnounceLevel.Start;
-    }
-
-    @Override
-    public void announceStart() {
-
-    }
-
     @Override
     public boolean run() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Main.GetPlayers()) {
 
             Block target = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
 
@@ -45,15 +33,5 @@ public class YeetBlocks implements CustomScript {
             }
         }
         return false;
-    }
-
-    @Override
-    public void revert() {
-
-    }
-
-    @Override
-    public void announceEnd() {
-
     }
 }

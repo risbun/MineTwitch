@@ -1,8 +1,7 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.enums.AnnounceLevel;
+import com.github.risbun.minetwitch.Main;
 import com.github.risbun.minetwitch.interfaces.CustomScript;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,18 +11,8 @@ import java.util.Objects;
 public class StoneTools implements CustomScript {
 
     @Override
-    public AnnounceLevel getAnnounceLevel() {
-        return null;
-    }
-
-    @Override
-    public void announceStart() {
-
-    }
-
-    @Override
     public boolean run() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Main.GetPlayers()) {
             for (ItemStack i : p.getInventory()) {
                 if (i == null) continue;
                 String yes = i.getType().getKey().toString();
@@ -36,15 +25,5 @@ public class StoneTools implements CustomScript {
         }
 
         return false;
-    }
-
-    @Override
-    public void revert() {
-
-    }
-
-    @Override
-    public void announceEnd() {
-
     }
 }
