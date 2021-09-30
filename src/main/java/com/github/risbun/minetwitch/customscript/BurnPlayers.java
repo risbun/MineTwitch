@@ -2,12 +2,12 @@ package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.Main;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 
-public class BurnPlayers implements CustomScript {
+public class BurnPlayers implements CustomEvent {
 
     @Override
     public AnnounceLevel getAnnounceLevel() {

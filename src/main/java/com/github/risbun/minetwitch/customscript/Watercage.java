@@ -1,9 +1,9 @@
 package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.parser.CommandParser;
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 
-public class Watercage implements CustomScript {
+public class Watercage implements CustomEvent {
 
     @Override
     public boolean run() {

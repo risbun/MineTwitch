@@ -1,6 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -10,7 +10,7 @@ import java.util.Random;
 
 import static com.github.risbun.minetwitch.Main.p;
 
-public class DropsMultiplied implements CustomScript {
+public class DropsMultiplied implements CustomEvent {
 
     Random random = new Random();
     int maxMultiplicationCount = 10;

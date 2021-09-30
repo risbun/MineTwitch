@@ -1,10 +1,10 @@
 package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.Main;
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.entity.Player;
 
-public class RemoveFood implements CustomScript {
+public class RemoveFood implements CustomEvent {
     @Override
     public boolean run() {
         for (Player p : Main.GetPlayers()) {

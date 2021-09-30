@@ -1,6 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -14,7 +14,7 @@ import java.util.Random;
 
 import static com.github.risbun.minetwitch.Main.p;
 
-public class RandomDrops implements CustomScript {
+public class RandomDrops implements CustomEvent {
 
     Random random = new Random();
     List<Material> items;

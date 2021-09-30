@@ -1,13 +1,13 @@
 package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.Main;
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
 
-public class ExplodeEntities implements CustomScript {
+public class ExplodeEntities implements CustomEvent {
     @Override
     public boolean run() {
         for (Player p : Main.GetPlayers()){

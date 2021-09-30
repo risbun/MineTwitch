@@ -2,7 +2,7 @@ package com.github.risbun.minetwitch.parser;
 
 import com.github.risbun.minetwitch.Main;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,13 +27,13 @@ public class CommandParser {
     }
 
     public static void runCustom(String c) {
-        CustomScript ClassToRun = null;
+        CustomEvent ClassToRun = null;
         try {
             ClassToRun = classLoader
                     .loadClass("com.github.risbun.minetwitch.customscript." + c)
-                    .asSubclass(CustomScript.class).getDeclaredConstructor().newInstance();
+                    .asSubclass(CustomEvent.class).getDeclaredConstructor().newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
+            Main.announceAll(String.format("Error loading CustomEvent:\n[%s]", e));
         }
 
         if(ClassToRun == null) return;
@@ -49,7 +49,7 @@ public class CommandParser {
         }
     }
 
-    private static @NotNull Runnable revertClassToRun(CustomScript ClassToRun, AnnounceLevel level){
+    private static @NotNull Runnable revertClassToRun(CustomEvent ClassToRun, AnnounceLevel level){
         return () -> {
             ClassToRun.revert();
 

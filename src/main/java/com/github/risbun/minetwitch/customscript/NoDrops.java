@@ -1,13 +1,13 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import static com.github.risbun.minetwitch.Main.p;
 
-public class NoDrops implements CustomScript {
+public class NoDrops implements CustomEvent {
     @Override
     public boolean run() {
         p.getServer().getPluginManager().registerEvents(this, p);

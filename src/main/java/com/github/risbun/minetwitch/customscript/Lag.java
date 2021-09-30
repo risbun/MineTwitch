@@ -1,7 +1,7 @@
 package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.Main;
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -9,7 +9,7 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
-public class Lag implements CustomScript {
+public class Lag implements CustomEvent {
 
     int taskIndex;
     HashMap<Player, Location> playerLocation = new HashMap<>();

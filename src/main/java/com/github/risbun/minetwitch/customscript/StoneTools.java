@@ -1,14 +1,14 @@
 package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.Main;
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
-public class StoneTools implements CustomScript {
+public class StoneTools implements CustomEvent {
 
     @Override
     public boolean run() {

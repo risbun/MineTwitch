@@ -1,13 +1,13 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import static com.github.risbun.minetwitch.Main.p;
 
-public class NoInteraction implements CustomScript {
+public class NoInteraction implements CustomEvent {
 
     @Override
     public boolean run() {

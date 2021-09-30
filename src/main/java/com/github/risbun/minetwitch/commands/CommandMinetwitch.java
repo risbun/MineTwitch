@@ -118,8 +118,7 @@ public class CommandMinetwitch implements CommandExecutor {
                     minetwitch.setDisplaySlot(DisplaySlot.SIDEBAR);
 
                     for (int i = 1; i < 4; i++) {
-                        Team t;
-                        t = board.registerNewTeam(i + ". ");
+                        Team t = board.registerNewTeam(i + ". ");
                         t.addEntry(i + ". ");
                         t.suffix(Component.text("Loading..."));
                         minetwitch.getScore(i + ". ").setScore(0);

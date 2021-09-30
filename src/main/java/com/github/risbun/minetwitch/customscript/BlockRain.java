@@ -1,7 +1,7 @@
 package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.Main;
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockRain implements CustomScript {
+public class BlockRain implements CustomEvent {
 
     int taskIndex;
     float offset = 64;

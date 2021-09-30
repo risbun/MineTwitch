@@ -1,12 +1,12 @@
 package com.github.risbun.minetwitch.customscript;
 
 import com.github.risbun.minetwitch.Main;
-import com.github.risbun.minetwitch.interfaces.CustomScript;
+import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.World;
 
 import java.util.HashMap;
 
-public class ShortSighted implements CustomScript {
+public class ShortSighted implements CustomEvent {
 
     HashMap<World, Integer> yep = new HashMap<>();
 
