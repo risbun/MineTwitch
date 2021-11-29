@@ -1,6 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.Main;
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import net.kyori.adventure.text.Component;
@@ -18,12 +18,12 @@ public class BurnPlayers implements CustomEvent {
     public void announceStart() {
         Component comp = Component.text("BURN BABY BURN!")
                 .color(TextColor.color(255, 152, 0));
-        Main.announceAll(comp);
+        MainClass.announceAll(comp);
     }
 
     @Override
     public boolean run() {
-        for (Player p : Main.GetPlayers()) {
+        for (Player p : MainClass.GetPlayers()) {
             p.setFireTicks(100);
         }
         return false;

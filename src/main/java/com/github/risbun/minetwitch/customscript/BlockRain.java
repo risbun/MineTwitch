@@ -1,6 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.Main;
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,8 +29,8 @@ public class BlockRain implements CustomEvent {
             if(mat.isBlock() && mat.isSolid()) blocks.add(mat);
         }
 
-        taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.p, () -> {
-            for(Player p : Main.GetPlayers()){
+        taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(MainClass.p, () -> {
+            for(Player p : MainClass.GetPlayers()){
                 Block b = p.getLocation().getBlock();
                 Location summon = b.getLocation();
                 summon.setY(255);

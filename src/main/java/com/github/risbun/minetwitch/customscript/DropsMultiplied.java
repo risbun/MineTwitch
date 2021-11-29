@@ -8,7 +8,7 @@ import org.bukkit.event.block.BlockDropItemEvent;
 
 import java.util.Random;
 
-import static com.github.risbun.minetwitch.Main.p;
+import static com.github.risbun.minetwitch.MainClass.p;
 
 public class DropsMultiplied implements CustomEvent {
 

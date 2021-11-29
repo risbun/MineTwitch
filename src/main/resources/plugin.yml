@@ -1,6 +1,6 @@
 name: MineTwitch
 version: @version@
-main: com.github.risbun.minetwitch.Main
+main: com.github.risbun.minetwitch.MainClass
 api-version: 1.17
 commands:
   minetwitch:

@@ -1,6 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.Main;
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.World;
 
@@ -13,7 +13,7 @@ public class ShortSighted implements CustomEvent {
     @Override
     public boolean run() {
         yep.clear();
-        for(World w : Main.p.getServer().getWorlds()){
+        for(World w : MainClass.p.getServer().getWorlds()){
             yep.put(w, w.getViewDistance());
             w.setViewDistance(2);
         }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.github.risbun.minetwitch.Main.p;
+import static com.github.risbun.minetwitch.MainClass.p;
 
 public class RandomDrops implements CustomEvent {
 

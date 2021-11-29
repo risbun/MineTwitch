@@ -1,13 +1,14 @@
 package com.github.risbun.minetwitch.parser;
 
-import com.github.risbun.minetwitch.Main;
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static com.github.risbun.minetwitch.Main.classLoader;
-import static com.github.risbun.minetwitch.Main.p;
+import static com.github.risbun.minetwitch.MainClass.classLoader;
+import static com.github.risbun.minetwitch.MainClass.p;
 import static org.bukkit.Bukkit.getScheduler;
 import static org.bukkit.Bukkit.getServer;
 
@@ -16,7 +17,7 @@ public class CommandParser {
         if(!command.startsWith("custom")){
             sendCommand(command);
             if(command.startsWith("give")){
-                Main.announceAll(alias);
+                MainClass.announceAll(alias);
                 sendCommand("title @a title \"" +alias+"\"");
             }
         }else{
@@ -33,7 +34,7 @@ public class CommandParser {
                     .loadClass("com.github.risbun.minetwitch.customscript." + c)
                     .asSubclass(CustomEvent.class).getDeclaredConstructor().newInstance();
         } catch (Exception e) {
-            Main.announceAll(String.format("Error loading CustomEvent:\n[%s]", e));
+            MainClass.announceAll(String.format("Error loading CustomEvent:\n[%s]", e));
         }
 
         if(ClassToRun == null) return;
@@ -62,7 +63,10 @@ public class CommandParser {
     public void sendCommand(String command){
         getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
     }
+
     public static void sendAllCommand(String command){
-        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at @a run " + command);
+        for(Player p : MainClass.GetPlayers()){
+            getServer().dispatchCommand(Bukkit.getConsoleSender(), String.format("execute at %s run %s", p.getName(), command));
+        }
     }
 }

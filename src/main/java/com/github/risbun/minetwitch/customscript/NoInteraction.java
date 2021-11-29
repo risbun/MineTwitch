@@ -1,11 +1,12 @@
 package com.github.risbun.minetwitch.customscript;
 
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import static com.github.risbun.minetwitch.Main.p;
+import static com.github.risbun.minetwitch.MainClass.p;
 
 public class NoInteraction implements CustomEvent {
 
@@ -22,6 +23,6 @@ public class NoInteraction implements CustomEvent {
 
     @EventHandler
     public void onPlayerInteraction(PlayerInteractEvent e){
-        e.setCancelled(true);
+        if(MainClass.ShouldBeAffected(e.getPlayer())) e.setCancelled(true);
     }
 }

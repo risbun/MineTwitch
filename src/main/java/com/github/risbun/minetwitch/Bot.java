@@ -10,8 +10,7 @@ import org.bukkit.ChatColor;
 import java.util.List;
 import java.util.Objects;
 
-import static com.github.risbun.minetwitch.Main.*;
-import static com.github.risbun.minetwitch.Main.twitchClient;
+import static com.github.risbun.minetwitch.MainClass.*;
 
 public class Bot {
     public static void load(TwitchClient twitchClient){
@@ -34,34 +33,39 @@ public class Bot {
 
     private void onMessage(ChannelMessageEvent event) {
         if (!event.getUser().getName().contains(Objects.requireNonNull(p.getConfig().getString("bot.username")))) {
-            if (event.getMessage().equals("1") || event.getMessage().equals("2") || event.getMessage().equals("3")) {
-                if (votenow) {
-                    if (!globalVotes.contains(event.getUser().getId())) {
-                        int vote = Integer.parseInt(event.getMessage()) - 1;
+            switch (event.getMessage()) {
+                case "1":
+                case "2":
+                case "3":
+                    if (votenow) {
+                        if (!globalVotes.contains(event.getUser().getId())) {
+                            int vote = Integer.parseInt(event.getMessage()) - 1;
 
-                        int val = Integer.parseInt(votes.get(vote));
-                        val++;
-                        votes.set(vote, String.valueOf(val));
+                            int val = Integer.parseInt(votes.get(vote));
+                            val++;
+                            votes.set(vote, String.valueOf(val));
 
-                        if (!p.getConfig().getBoolean("ingame.hide")) {
-                            CommandMinetwitch.update(vote, val);
+                            if (!p.getConfig().getBoolean("ingame.hide")) {
+                                CommandMinetwitch.update(vote, val);
+                            }
+
+                            globalVotes.add(event.getUser().getId());
                         }
-
-                        globalVotes.add(event.getUser().getId());
                     }
-                }
-            } else {
-                if (p.getConfig().getBoolean("ingame.chat")) {
-                    String tag = "";
-                    for (int i = 0; i < 4; i++) {
-                        if (tag.equals("")) {
-                            if (event.getPermissions().toString().contains(permissions[i])) {
-                                tag = tags[i] + " ";
+                    break;
+                default:
+                    if (p.getConfig().getBoolean("ingame.chat")) {
+                        String tag = "";
+                        for (int i = 0; i < 4; i++) {
+                            if (tag.equals("")) {
+                                if (event.getPermissions().toString().contains(permissions[i])) {
+                                    tag = tags[i] + " ";
+                                }
                             }
                         }
+                        announceAll(tag + event.getUser().getName() + ChatColor.WHITE + ": " + event.getMessage());
                     }
-                    Main.announceAll(tag + event.getUser().getName() + ChatColor.WHITE + ": " + event.getMessage());
-                }
+                    break;
             }
         }
     }

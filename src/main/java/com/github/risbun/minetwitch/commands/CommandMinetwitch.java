@@ -2,7 +2,8 @@ package com.github.risbun.minetwitch.commands;
 
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.risbun.minetwitch.Bot;
-import com.github.risbun.minetwitch.Main;
+import com.github.risbun.minetwitch.MainClass;
+import com.github.risbun.minetwitch.classes.MinetwitchEvent;
 import com.github.risbun.minetwitch.parser.CommandParser;
 import com.github.twitch4j.TwitchClientBuilder;
 import net.kyori.adventure.text.Component;
@@ -20,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
-import static com.github.risbun.minetwitch.Main.*;
+import static com.github.risbun.minetwitch.MainClass.*;
 
 public class CommandMinetwitch implements CommandExecutor {
     private final Random rand = new Random();
@@ -34,7 +35,7 @@ public class CommandMinetwitch implements CommandExecutor {
             if (!enabled) {
                 enabled = true;
 
-                Main.announceAll(prefix + " Starting...");
+                MainClass.announceAll(prefix + " Starting...");
                 BukkitScheduler scheduler = getServer().getScheduler();
                 OAuth2Credential oauth;
 
@@ -42,7 +43,7 @@ public class CommandMinetwitch implements CommandExecutor {
                 if (!oauthString.equals("oauth:xxxx")) {
                     oauth = new OAuth2Credential("twitch", oauthString);
                 } else {
-                    Main.announceAll(prefix + " OAuth in config not set, follow getting started on this page: https://risbun.github.io/MineTwitch/");
+                    MainClass.announceAll(prefix + " OAuth in config not set, follow getting started on this page: https://risbun.github.io/MineTwitch/");
                     enabled = false;
                     return true;
                 }
@@ -71,7 +72,6 @@ public class CommandMinetwitch implements CommandExecutor {
                     Bot.send("Start voting now!");
 
                     votenow = true;
-                    customCommand = "";
 
                     globalVotes.clear();
                     votes.clear();
@@ -79,17 +79,18 @@ public class CommandMinetwitch implements CommandExecutor {
                     chosen.clear();
                     chosenActions.clear();
 
-                    ArrayList<?> arr = (ArrayList<?>) commandsConfig.getList("arr");
-
                     boolean hide = p.getConfig().getBoolean("ingame.hide");
 
                     for (int i = 0; i < 3; i++) {
-                        int ran = rand.nextInt(Objects.requireNonNull(arr).size());
+                        int ran = rand.nextInt(MainClass.allEvents.size());
 
-                        HashMap<?, ?> hash = (HashMap<?, ?>) arr.get(ran);
+                        MinetwitchEvent event = allEvents.get(ran);
 
-                        chosen.add(hash.get("name").toString());
-                        chosenActions.add(hash.get("action").toString());
+                        String key = event.getKey();
+                        String value = event.GetCommand();
+
+                        chosen.add(key);
+                        chosenActions.add(value);
 
                         votes.add(String.valueOf(0));
                         if (hide) {
@@ -104,6 +105,7 @@ public class CommandMinetwitch implements CommandExecutor {
                             team.suffix(Component.text(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1)));
                         }
                     }
+
                     scheduler.scheduleSyncDelayedTask(p, results, p.getConfig().getInt("vote.time") * 20L);
                 };
 
@@ -125,7 +127,7 @@ public class CommandMinetwitch implements CommandExecutor {
                     }
                 }
 
-                Main.announceAll(prefix + " Loaded, waiting 10 seconds");
+                announceAll(prefix + " Loaded, waiting 10 seconds");
             } else {
                 enabled = false;
                 disable();

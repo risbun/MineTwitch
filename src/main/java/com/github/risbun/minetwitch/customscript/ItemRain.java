@@ -1,6 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.Main;
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import net.kyori.adventure.text.Component;
@@ -32,7 +32,7 @@ public class ItemRain implements CustomEvent {
     public void announceStart() {
         Component comp = Component.text("Items have started falling from the sky!")
                 .color(TextColor.color(0, 255, 0));
-        Main.announceAll(comp);
+        MainClass.announceAll(comp);
     }
 
     @Override
@@ -42,8 +42,8 @@ public class ItemRain implements CustomEvent {
             if(mat.isItem()) items.add(mat);
         }
 
-        taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.p, () -> {
-            for(Player p : Main.GetPlayers()){
+        taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(MainClass.p, () -> {
+            for(Player p : MainClass.GetPlayers()){
                 Location l = p.getLocation();
                 l.setY(255);
                 l.add((random.nextFloat() * offset) - offset / 2, 0, (random.nextFloat() * offset) - offset / 2);
@@ -65,6 +65,6 @@ public class ItemRain implements CustomEvent {
     public void announceEnd() {
         Component comp = Component.text("Items have stopped falling from the sky!")
                 .color(TextColor.color(255, 0, 0));
-        Main.announceAll(comp);
+        MainClass.announceAll(comp);
     }
 }

@@ -1,6 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.Main;
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,7 +14,7 @@ import java.util.Objects;
 public class YeetBlocks implements CustomEvent {
     @Override
     public boolean run() {
-        for (Player p : Main.GetPlayers()) {
+        for (Player p : MainClass.GetPlayers()) {
 
             Block target = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
 

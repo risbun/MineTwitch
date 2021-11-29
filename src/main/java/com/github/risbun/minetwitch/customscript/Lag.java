@@ -1,6 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.Main;
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -19,7 +19,7 @@ public class Lag implements CustomEvent {
 
         playerLocation.clear();
 
-        taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.p, () -> {
+        taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(MainClass.p, () -> {
             for(Player p : playerLocation.keySet()){
                 Location oldPLocation = playerLocation.get(p);
                 Location pLocation = p.getLocation();
@@ -34,7 +34,7 @@ public class Lag implements CustomEvent {
                 p.setVelocity(vel);
             }
             playerLocation.clear();
-            for(Player p : Main.GetPlayers()){
+            for(Player p : MainClass.GetPlayers()){
                 playerLocation.put(p, p.getLocation());
             }
         }, 0L, 20L);

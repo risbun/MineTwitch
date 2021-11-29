@@ -1,11 +1,12 @@
 package com.github.risbun.minetwitch.customscript;
 
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import static com.github.risbun.minetwitch.Main.p;
+import static com.github.risbun.minetwitch.MainClass.p;
 
 public class Freeze implements CustomEvent {
     @Override
@@ -21,6 +22,6 @@ public class Freeze implements CustomEvent {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e){
-        e.setCancelled(true);
+        if(MainClass.ShouldBeAffected(e.getPlayer())) e.setCancelled(true);
     }
 }

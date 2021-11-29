@@ -1,6 +1,6 @@
 package com.github.risbun.minetwitch.customscript;
 
-import com.github.risbun.minetwitch.Main;
+import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -12,7 +12,7 @@ public class PumpkinOnHead implements CustomEvent {
 
     @Override
     public boolean run() {
-        for(Player p : Main.GetPlayers()){
+        for(Player p : MainClass.GetPlayers()){
             ItemStack pumpkin = new ItemStack(Material.CARVED_PUMPKIN);
             pumpkin.addEnchantment(Enchantment.BINDING_CURSE, 1);
 
@@ -24,7 +24,7 @@ public class PumpkinOnHead implements CustomEvent {
 
     @Override
     public void revert() {
-        for(Player p : Main.GetPlayers()){
+        for(Player p : MainClass.GetPlayers()){
             PlayerInventory iv = p.getInventory();
             iv.setHelmet(null);
         }

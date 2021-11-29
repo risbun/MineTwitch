@@ -1,5 +1,6 @@
 package com.github.risbun.minetwitch;
 
+import com.github.risbun.minetwitch.classes.MinetwitchEvent;
 import com.github.risbun.minetwitch.commands.CommandMinetwitch;
 import com.github.risbun.minetwitch.commands.CommandTest;
 import com.github.twitch4j.TwitchClient;
@@ -19,26 +20,27 @@ import org.bukkit.scoreboard.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 
-public class Main extends JavaPlugin implements Listener {
+public class MainClass extends JavaPlugin implements Listener {
     public static Scoreboard board;
     public static List<String> globalVotes = new ArrayList<>();
     public static List<String> votes = new ArrayList<>();
     public static List<String> chosen = new ArrayList<>();
     public static List<String> chosenActions = new ArrayList<>();
-    public static String customCommand = "";
     public static boolean votenow = false;
     public static boolean enabled = false;
     public static Plugin p = null;
     public static TwitchClient twitchClient = null;
     public static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
-    public static FileConfiguration commandsConfig;
+
+    public static FileConfiguration eventsConfig;
+    public static FileConfiguration customConfig;
 
     public static ClassLoader classLoader;
+
+    public static List<MinetwitchEvent> allEvents = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -53,6 +55,24 @@ public class Main extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
 
         CreateCommandJSON();
+
+        var keys = eventsConfig.getKeys(false).iterator();
+        var values = eventsConfig.getValues(false);
+
+        while(keys.hasNext()) {
+            String s = keys.next();
+
+            allEvents.add(new MinetwitchEvent(s, (String) values.get(s)));
+        }
+
+        var keys2 = customConfig.getKeys(false).iterator();
+        var values2 = customConfig.getValues(false);
+
+        while(keys2.hasNext()) {
+            String s = keys2.next();
+
+            allEvents.add(new MinetwitchEvent(s, (String) values2.get(s)));
+        }
     }
 
     @Override
@@ -66,8 +86,6 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public static void disable() {
-        customCommand = "";
-
         for (Team team : board.getTeams()) {
             team.unregister();
         }
@@ -76,18 +94,32 @@ public class Main extends JavaPlugin implements Listener {
         }
 
         Bukkit.getScheduler().cancelTasks(p);
-        Main.announceAll(prefix + " Disabled");
+        announceAll(prefix + " Disabled");
     }
 
     private void CreateCommandJSON() {
-        File commandsFile = new File(getDataFolder(), "commands.json");
-        if (!commandsFile.exists()) {
-            saveResource("commands.json", false);
+        File eventsFile = new File(getDataFolder(), "eventsConfig.json");
+        File customFile = new File(getDataFolder(), "customConfig.json");
+
+        if (!eventsFile.exists()) {
+            saveResource("eventsConfig.json", false);
         }
 
-        commandsConfig = new YamlConfiguration();
+        if (!customFile.exists()) {
+            saveResource("customConfig.json", false);
+        }
+
+        eventsConfig = new YamlConfiguration();
+        customConfig = new YamlConfiguration();
+
         try {
-            commandsConfig.load(commandsFile);
+            eventsConfig.load(eventsFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            customConfig.load(customFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -101,12 +133,25 @@ public class Main extends JavaPlugin implements Listener {
         return player;
     }
 
+    public static boolean ShouldBeAffected(Player p){
+        switch (p.getGameMode()){
+            case CREATIVE, SPECTATOR -> {
+                return false;
+            }
+            case SURVIVAL, ADVENTURE -> {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static void announceAll(String message){
         announceAll(Component.text(message));
     }
 
     public static void announceAll(Component message){
-        Main.p.getServer().getLogger().log(Level.INFO, ((TextComponent) message).content());
+        p.getServer().getLogger().log(Level.INFO, ((TextComponent) message).content());
         for(Player p : Bukkit.getOnlinePlayers()){
             p.sendMessage(message);
         }

@@ -1,0 +1,21 @@
+{
+  "Adventure Time!":  "custom AdventureTime",
+  "Burn Player": "custom BurnPlayers",
+  "Creeper Sound": "custom CreeperSound",
+  "Block Drops Multiplied": "custom DropsMultiplied",
+  "Explode Entities": "custom ExplodeEntities",
+  "Freeze": "custom Freeze",
+  "Random Item Rain": "custom ItemRain",
+  "No Block Drops": "custom NoDrops",
+  "No Interaction": "custom NoInteraction",
+  "Nether Portal": "custom Portal",
+  "Pumpkin on head": "custom PumpkinOnHead",
+  "Random Block Drops": "custom RandomDrops",
+  "Remove Food": "custom RemoveFood",
+  "2 Render Distance": "custom ShortSighted",
+  "Stone Tools": "custom StoneTools",
+  "Water Cage":  "custom Watercage",
+  "Yeet Blocks": "custom YeetBlocks",
+  "Spider Jockey": "custom SpiderJockey",
+  "Apache Helicopter": "custom ApacheHelicopter"
+}

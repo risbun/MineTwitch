@@ -1,7 +1,6 @@
 package com.github.risbun.minetwitch.commands;
 
 import com.github.risbun.minetwitch.parser.CommandParser;
-import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
