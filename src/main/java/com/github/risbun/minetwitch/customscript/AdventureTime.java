@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 public class AdventureTime implements CustomEvent {
     @Override
     public boolean run() {
-        for (Player p : MainClass.GetPlayers()) {
+        for (Player p : MainClass.getPlayers()) {
             p.setGameMode(GameMode.ADVENTURE);
         }
         return true;
@@ -16,7 +16,7 @@ public class AdventureTime implements CustomEvent {
 
     @Override
     public void revert() {
-        for (Player p : MainClass.GetPlayers()) {
+        for (Player p : MainClass.getPlayers()) {
             if(p.getGameMode().equals(GameMode.ADVENTURE)) p.setGameMode(GameMode.SURVIVAL);
         }
     }

@@ -11,7 +11,7 @@ public class ApacheHelicopter implements CustomEvent {
     @Override
     public boolean run() {
 
-        for (Player p : MainClass.GetPlayers()){
+        for (Player p : MainClass.getPlayers()){
             World w = p.getWorld();
 
             Bat bat = w.spawn(p.getLocation(), Bat.class);

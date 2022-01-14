@@ -23,6 +23,6 @@ public class NoInteraction implements CustomEvent {
 
     @EventHandler
     public void onPlayerInteraction(PlayerInteractEvent e){
-        if(MainClass.ShouldBeAffected(e.getPlayer())) e.setCancelled(true);
+        if(MainClass.shouldBeAffected(e.getPlayer())) e.setCancelled(true);
     }
 }

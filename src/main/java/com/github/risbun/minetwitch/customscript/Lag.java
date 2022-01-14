@@ -34,7 +34,7 @@ public class Lag implements CustomEvent {
                 p.setVelocity(vel);
             }
             playerLocation.clear();
-            for(Player p : MainClass.GetPlayers()){
+            for(Player p : MainClass.getPlayers()){
                 playerLocation.put(p, p.getLocation());
             }
         }, 0L, 20L);

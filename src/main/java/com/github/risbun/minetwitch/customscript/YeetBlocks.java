@@ -14,7 +14,7 @@ import java.util.Objects;
 public class YeetBlocks implements CustomEvent {
     @Override
     public boolean run() {
-        for (Player p : MainClass.GetPlayers()) {
+        for (Player p : MainClass.getPlayers()) {
 
             Block target = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
 

@@ -4,12 +4,16 @@ import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.entity.Player;
 
-public class RemoveFood implements CustomEvent {
+public class dropEverything implements CustomEvent {
     @Override
     public boolean run() {
-        for (Player p : MainClass.getPlayers()) {
-            p.setFoodLevel(0);
+
+        for (Player p : MainClass.getPlayers()){
+            p.dropItem(true);
+
+            p.getInventory().getContents();
         }
+
         return false;
     }
 }

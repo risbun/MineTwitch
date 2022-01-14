@@ -9,7 +9,7 @@ import org.bukkit.entity.Spider;
 public class SpiderJockey implements CustomEvent {
     @Override
     public boolean run() {
-        for(Player p : MainClass.GetPlayers()){
+        for(Player p : MainClass.getPlayers()){
             Entity spider = p.getWorld().spawn(p.getLocation(), Spider.class);
 
             spider.addPassenger(p);

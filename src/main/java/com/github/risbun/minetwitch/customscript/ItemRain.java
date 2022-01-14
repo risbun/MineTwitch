@@ -43,7 +43,7 @@ public class ItemRain implements CustomEvent {
         }
 
         taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(MainClass.p, () -> {
-            for(Player p : MainClass.GetPlayers()){
+            for(Player p : MainClass.getPlayers()){
                 Location l = p.getLocation();
                 l.setY(255);
                 l.add((random.nextFloat() * offset) - offset / 2, 0, (random.nextFloat() * offset) - offset / 2);

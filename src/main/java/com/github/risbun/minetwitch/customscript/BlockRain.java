@@ -30,7 +30,7 @@ public class BlockRain implements CustomEvent {
         }
 
         taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(MainClass.p, () -> {
-            for(Player p : MainClass.GetPlayers()){
+            for(Player p : MainClass.getPlayers()){
                 Block b = p.getLocation().getBlock();
                 Location summon = b.getLocation();
                 summon.setY(255);

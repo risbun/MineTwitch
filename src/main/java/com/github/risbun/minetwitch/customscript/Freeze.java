@@ -22,6 +22,6 @@ public class Freeze implements CustomEvent {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e){
-        if(MainClass.ShouldBeAffected(e.getPlayer())) e.setCancelled(true);
+        if(MainClass.shouldBeAffected(e.getPlayer())) e.setCancelled(true);
     }
 }

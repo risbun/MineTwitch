@@ -9,7 +9,7 @@ import org.bukkit.util.Vector;
 public class CreeperSound implements CustomEvent {
     @Override
     public boolean run() {
-        for (Player p : MainClass.GetPlayers()) {
+        for (Player p : MainClass.getPlayers()) {
             Vector inverseDirectionVec = p.getLocation().getDirection().normalize().multiply(-2);
             p.playSound(p.getLocation().add(inverseDirectionVec), Sound.ENTITY_CREEPER_PRIMED, 1, 1);
         }

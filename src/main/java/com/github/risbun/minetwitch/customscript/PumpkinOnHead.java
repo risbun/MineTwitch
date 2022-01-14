@@ -12,7 +12,7 @@ public class PumpkinOnHead implements CustomEvent {
 
     @Override
     public boolean run() {
-        for(Player p : MainClass.GetPlayers()){
+        for(Player p : MainClass.getPlayers()){
             ItemStack pumpkin = new ItemStack(Material.CARVED_PUMPKIN);
             pumpkin.addEnchantment(Enchantment.BINDING_CURSE, 1);
 
@@ -24,7 +24,7 @@ public class PumpkinOnHead implements CustomEvent {
 
     @Override
     public void revert() {
-        for(Player p : MainClass.GetPlayers()){
+        for(Player p : MainClass.getPlayers()){
             PlayerInventory iv = p.getInventory();
             iv.setHelmet(null);
         }

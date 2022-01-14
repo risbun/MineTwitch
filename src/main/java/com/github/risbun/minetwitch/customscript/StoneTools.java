@@ -12,7 +12,7 @@ public class StoneTools implements CustomEvent {
 
     @Override
     public boolean run() {
-        for (Player p : MainClass.GetPlayers()) {
+        for (Player p : MainClass.getPlayers()) {
             for (ItemStack i : p.getInventory()) {
                 if (i == null) continue;
                 String yes = i.getType().getKey().toString();

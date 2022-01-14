@@ -4,7 +4,9 @@ import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import static com.github.risbun.minetwitch.MainClass.classLoader;
@@ -14,16 +16,30 @@ import static org.bukkit.Bukkit.getServer;
 
 public class CommandParser {
     public void send(String alias, String command){
-        if(!command.startsWith("custom")){
-            sendCommand(command);
-            if(command.startsWith("give")){
-                MainClass.announceAll(alias);
-                sendCommand("title @a title \"" +alias+"\"");
-            }
-        }else{
-            String c = command.split(" ")[1];
+        var args = command.split(" ");
 
-            runCustom(c);
+        switch (args[0]) {
+            case "command" -> runCustom(args[1]);
+            case "give" -> {
+                var item = args[1];
+                var count = args[2];
+                for (Player p : MainClass.getPlayers()) {
+
+                    var itemMaterial = Material.matchMaterial(item);
+
+                    if (itemMaterial == null) {
+                        MainClass.announceAll(String.format("ITEM COULD NOT BE FOUND. [%s]", itemMaterial));
+                        break;
+                    }
+
+                    ItemStack itemStack = new ItemStack(itemMaterial);
+                    itemStack.setAmount(Integer.parseInt(count));
+
+                    p.getInventory().addItem(itemStack);
+                }
+                MainClass.announceAll(alias);
+            }
+            default -> sendCommand(command);
         }
     }
 
@@ -65,7 +81,7 @@ public class CommandParser {
     }
 
     public static void sendAllCommand(String command){
-        for(Player p : MainClass.GetPlayers()){
+        for(Player p : MainClass.getPlayers()){
             getServer().dispatchCommand(Bukkit.getConsoleSender(), String.format("execute at %s run %s", p.getName(), command));
         }
     }

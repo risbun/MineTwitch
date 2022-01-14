@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 public class Portal implements CustomEvent {
     @Override
     public boolean run() {
-        for (Player p : MainClass.GetPlayers()){
+        for (Player p : MainClass.getPlayers()){
             World w = p.getWorld();
 
             for (int x = 0; x < 4; x++){

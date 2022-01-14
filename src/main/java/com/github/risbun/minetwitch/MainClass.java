@@ -125,7 +125,7 @@ public class MainClass extends JavaPlugin implements Listener {
         }
     }
 
-    public static List<Player> GetPlayers(){
+    public static List<Player> getPlayers(){
         List<Player> player = new ArrayList<>();
         for(Player p : Bukkit.getOnlinePlayers()){
             if(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE)) player.add(p);
@@ -133,7 +133,7 @@ public class MainClass extends JavaPlugin implements Listener {
         return player;
     }
 
-    public static boolean ShouldBeAffected(Player p){
+    public static boolean shouldBeAffected(Player p){
         switch (p.getGameMode()){
             case CREATIVE, SPECTATOR -> {
                 return false;

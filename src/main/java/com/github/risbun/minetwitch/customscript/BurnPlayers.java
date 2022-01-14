@@ -23,7 +23,7 @@ public class BurnPlayers implements CustomEvent {
 
     @Override
     public boolean run() {
-        for (Player p : MainClass.GetPlayers()) {
+        for (Player p : MainClass.getPlayers()) {
             p.setFireTicks(100);
         }
         return false;

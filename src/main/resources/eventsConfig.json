@@ -17,5 +17,18 @@
   "Water Cage":  "custom Watercage",
   "Yeet Blocks": "custom YeetBlocks",
   "Spider Jockey": "custom SpiderJockey",
-  "Apache Helicopter": "custom ApacheHelicopter"
+  "Apache Helicopter": "custom ApacheHelicopter",
+  "Kick Players": "custom KickPlayers",
+  "Give 10 Diamonds": "give diamond 10",
+  "Give 10 Dirt": "give dirt 10",
+  "Give Bedrock": "give bedrock 1",
+  "Give 10 Iron Ingot": "give iron_ingot 10",
+  "Give 10 Gold Ingot": "give gold_ingot 10",
+  "Give 10 TNT": "give tnt 10",
+  "Give Anvil": "give anvil 1",
+  "Give Beacon": "give beacon 1",
+  "Give 16 Beef": "give cooked_beef 16",
+  "Give 16 Egg": "give egg 16",
+  "Give 16 Ender Pearl": "give ender_pearl 16",
+  "Drop EVERYTHING": "custom dropEverything"
 }

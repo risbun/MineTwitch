@@ -10,7 +10,7 @@ import java.util.Collection;
 public class ExplodeEntities implements CustomEvent {
     @Override
     public boolean run() {
-        for (Player p : MainClass.GetPlayers()){
+        for (Player p : MainClass.getPlayers()){
             Collection<Entity> nearbyEntites = p.getWorld().getNearbyEntities(p.getLocation(), 64, 64, 64);
 
             for(Entity entity: nearbyEntites){
