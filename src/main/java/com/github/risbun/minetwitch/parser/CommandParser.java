@@ -4,19 +4,14 @@ import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 import static com.github.risbun.minetwitch.MainClass.classLoader;
 import static com.github.risbun.minetwitch.MainClass.p;
@@ -25,16 +20,18 @@ import static org.bukkit.Bukkit.getServer;
 
 public class CommandParser {
     public static void send(String alias, String command){
-        var args = command.split(" ");
+        String[] args = command.split(" ");
 
         switch (args[0]) {
-            case "command" -> runCustom(args[1]);
-            case "give" -> {
-                var item = args[1];
-                var count = args[2];
+            case "command":
+                runCustom(args[1]);
+                break;
+            case "give":
+                String item = args[1];
+                String count = args[2];
                 for (Player p : MainClass.getPlayers()) {
 
-                    var itemMaterial = Material.matchMaterial(item);
+                    Material itemMaterial = Material.matchMaterial(item);
 
                     if (itemMaterial == null) {
                         MainClass.debugLog(String.format("ITEM COULD NOT BE FOUND. [%s]", itemMaterial));
@@ -47,11 +44,11 @@ public class CommandParser {
                     p.getInventory().addItem(itemStack);
                 }
                 MainClass.announceAll(alias);
-            }
-            case "everyone" -> {
+                break;
+            case "everyone":
                 sendAllCommand(command.substring(9));
-            }
-            case "effect" -> {
+                break;
+            case "effect":
                 PotionEffectType type = PotionEffectType.getByName(args[1]);
 
                 if(type == null){
@@ -66,33 +63,34 @@ public class CommandParser {
                 for (Player p : MainClass.getPlayers()){
                     p.addPotionEffect(potionEffect);
                 }
-            }
+                break;
 
-            case "effectAll" -> {
-                PotionEffectType type = PotionEffectType.getByName(args[1]);
+            case "effectAll":
+                PotionEffectType type_ = PotionEffectType.getByName(args[1]);
 
-                if(type == null){
+                if(type_ == null){
 
                     MainClass.debugLog(String.format("ALLEFFECT COULD NOT BE FOUND. [%s]", args[1]));
 
                     return;
                 }
 
-                PotionEffect potionEffect = new PotionEffect(type, Integer.parseInt(args[2]) * 20, Integer.parseInt(args[3]));
+                PotionEffect potionEffect_ = new PotionEffect(type_, Integer.parseInt(args[2]) * 20, Integer.parseInt(args[3]));
 
                 for (Player p : MainClass.getPlayers()){
                     for(Entity e : p.getWorld().getEntities()){
-                        if(e instanceof Player plr){
-                            if(!MainClass.shouldBeAffected(plr)) continue;
+                        if(e instanceof Player){
+                            if(!MainClass.shouldBeAffected((Player) e)) continue;
                         }
 
-                        if(e instanceof LivingEntity living){
-                            living.addPotionEffect(potionEffect);
+                        if(e instanceof LivingEntity){
+                            ((LivingEntity) e).addPotionEffect(potionEffect_);
                         }
                     }
                 }
-            }
-            default -> sendCommand(command);
+                break;
+            default:
+                sendCommand(command);
         }
     }
 

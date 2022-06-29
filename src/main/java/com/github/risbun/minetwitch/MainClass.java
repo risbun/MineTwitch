@@ -55,8 +55,8 @@ public class MainClass extends JavaPlugin implements Listener {
 
         CreateCommandJSON();
 
-        var keys = eventsConfig.getKeys(false).iterator();
-        var values = eventsConfig.getValues(false);
+        Iterator<String> keys = eventsConfig.getKeys(false).iterator();
+        Map<String, Object> values = eventsConfig.getValues(false);
 
         while(keys.hasNext()) {
             String s = keys.next();
@@ -113,12 +113,12 @@ public class MainClass extends JavaPlugin implements Listener {
 
     public static boolean shouldBeAffected(Player p){
         switch (p.getGameMode()){
-            case CREATIVE, SPECTATOR -> {
+            case CREATIVE:
+            case SPECTATOR:
                 return false;
-            }
-            case SURVIVAL, ADVENTURE -> {
+            case SURVIVAL:
+            case ADVENTURE:
                 return true;
-            }
         }
 
         return false;

@@ -11,7 +11,7 @@ public class CommandTest implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
 
-        var detshbiu = String.join(" ", args);
+        String detshbiu = String.join(" ", args);
 
         sender.sendMessage(String.format("Trying to run command: [%s]", detshbiu));
 

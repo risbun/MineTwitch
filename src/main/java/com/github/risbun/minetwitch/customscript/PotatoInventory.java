@@ -49,13 +49,11 @@ public class PotatoInventory implements CustomEvent {
 
                 if(item == null) continue;
 
-
-
                 ItemMeta itemMeta = item.getItemMeta();
 
                 if(itemMeta.lore() == null) continue;
 
-                var type = Material.matchMaterial(((TextComponent) itemMeta.lore().get(0)).content());
+                Material type = Material.matchMaterial(((TextComponent) itemMeta.lore().get(0)).content());
 
                 item.setItemMeta(itemMeta);
 

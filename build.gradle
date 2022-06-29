@@ -8,15 +8,16 @@ plugins {
 group 'com.github.risbun'
 version '2.0'
 
-sourceCompatibility = '1.17'
-targetCompatibility = '1.17'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
     maven {
-        url 'https://papermc.io/repo/repository/maven-public/'
+        name = 'paper'
+        url = 'https://minevolt.net/repo/'
     }
     maven {
         name = 'sonatype'
@@ -25,8 +26,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
-    implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.5.1'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.10.0'
 }
 
 processResources {

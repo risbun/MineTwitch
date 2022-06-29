@@ -20,7 +20,7 @@ public class PumpkinOnHead implements CustomEvent {
         for(Player p : MainClass.getPlayers()){
             PlayerInventory inventory = p.getInventory();
 
-            var helmet = inventory.getHelmet();
+            ItemStack helmet = inventory.getHelmet();
 
             if(helmet == null){
                 helmet = new ItemStack(Material.AIR);
@@ -42,11 +42,11 @@ public class PumpkinOnHead implements CustomEvent {
     public void revert() {
         for(Player p : MainClass.getPlayers()){
             PlayerInventory iv = p.getInventory();
-            var helmet = iv.getHelmet();
+            ItemStack helmet = iv.getHelmet();
 
             if(helmet == null || helmet.lore() == null) return;
 
-            var type = Material.matchMaterial(((TextComponent) helmet.lore().get(0)).content());
+            Material type = Material.matchMaterial(((TextComponent) helmet.lore().get(0)).content());
 
             if(type == null) return;
 
