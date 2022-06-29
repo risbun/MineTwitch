@@ -36,7 +36,6 @@ public class MainClass extends JavaPlugin implements Listener {
     public static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
 
     public static FileConfiguration eventsConfig;
-    public static FileConfiguration customConfig;
 
     public static ClassLoader classLoader;
 
@@ -64,15 +63,6 @@ public class MainClass extends JavaPlugin implements Listener {
 
             allEvents.add(new MinetwitchEvent(s, (String) values.get(s)));
         }
-
-        var keys2 = customConfig.getKeys(false).iterator();
-        var values2 = customConfig.getValues(false);
-
-        while(keys2.hasNext()) {
-            String s = keys2.next();
-
-            allEvents.add(new MinetwitchEvent(s, (String) values2.get(s)));
-        }
     }
 
     @Override
@@ -99,27 +89,15 @@ public class MainClass extends JavaPlugin implements Listener {
 
     private void CreateCommandJSON() {
         File eventsFile = new File(getDataFolder(), "eventsConfig.json");
-        File customFile = new File(getDataFolder(), "customConfig.json");
 
         if (!eventsFile.exists()) {
             saveResource("eventsConfig.json", false);
         }
 
-        if (!customFile.exists()) {
-            saveResource("customConfig.json", false);
-        }
-
         eventsConfig = new YamlConfiguration();
-        customConfig = new YamlConfiguration();
 
         try {
             eventsConfig.load(eventsFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            customConfig.load(customFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -153,6 +131,18 @@ public class MainClass extends JavaPlugin implements Listener {
     public static void announceAll(Component message){
         p.getServer().getLogger().log(Level.INFO, ((TextComponent) message).content());
         for(Player p : Bukkit.getOnlinePlayers()){
+            p.sendMessage(message);
+        }
+    }
+
+    public static void debugLog(String message){
+        announceAll(Component.text(message));
+    }
+
+    public static void debugLog(Component message){
+        p.getServer().getLogger().log(Level.INFO, ((TextComponent) message).content());
+        for(Player p : Bukkit.getOnlinePlayers()){
+            if(!p.isOp()) continue;
             p.sendMessage(message);
         }
     }

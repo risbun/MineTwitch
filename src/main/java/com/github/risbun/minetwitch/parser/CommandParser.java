@@ -4,10 +4,19 @@ import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.enums.AnnounceLevel;
 import com.github.risbun.minetwitch.interfaces.CustomEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import static com.github.risbun.minetwitch.MainClass.classLoader;
 import static com.github.risbun.minetwitch.MainClass.p;
@@ -15,7 +24,7 @@ import static org.bukkit.Bukkit.getScheduler;
 import static org.bukkit.Bukkit.getServer;
 
 public class CommandParser {
-    public void send(String alias, String command){
+    public static void send(String alias, String command){
         var args = command.split(" ");
 
         switch (args[0]) {
@@ -28,7 +37,7 @@ public class CommandParser {
                     var itemMaterial = Material.matchMaterial(item);
 
                     if (itemMaterial == null) {
-                        MainClass.announceAll(String.format("ITEM COULD NOT BE FOUND. [%s]", itemMaterial));
+                        MainClass.debugLog(String.format("ITEM COULD NOT BE FOUND. [%s]", itemMaterial));
                         break;
                     }
 
@@ -38,6 +47,50 @@ public class CommandParser {
                     p.getInventory().addItem(itemStack);
                 }
                 MainClass.announceAll(alias);
+            }
+            case "everyone" -> {
+                sendAllCommand(command.substring(9));
+            }
+            case "effect" -> {
+                PotionEffectType type = PotionEffectType.getByName(args[1]);
+
+                if(type == null){
+
+                    MainClass.debugLog(String.format("EFFECT COULD NOT BE FOUND. [%s]", args[1]));
+
+                    return;
+                }
+
+                PotionEffect potionEffect = new PotionEffect(type, Integer.parseInt(args[2]) * 20, Integer.parseInt(args[3]));
+
+                for (Player p : MainClass.getPlayers()){
+                    p.addPotionEffect(potionEffect);
+                }
+            }
+
+            case "effectAll" -> {
+                PotionEffectType type = PotionEffectType.getByName(args[1]);
+
+                if(type == null){
+
+                    MainClass.debugLog(String.format("ALLEFFECT COULD NOT BE FOUND. [%s]", args[1]));
+
+                    return;
+                }
+
+                PotionEffect potionEffect = new PotionEffect(type, Integer.parseInt(args[2]) * 20, Integer.parseInt(args[3]));
+
+                for (Player p : MainClass.getPlayers()){
+                    for(Entity e : p.getWorld().getEntities()){
+                        if(e instanceof Player plr){
+                            if(!MainClass.shouldBeAffected(plr)) continue;
+                        }
+
+                        if(e instanceof LivingEntity living){
+                            living.addPotionEffect(potionEffect);
+                        }
+                    }
+                }
             }
             default -> sendCommand(command);
         }
@@ -50,7 +103,7 @@ public class CommandParser {
                     .loadClass("com.github.risbun.minetwitch.customscript." + c)
                     .asSubclass(CustomEvent.class).getDeclaredConstructor().newInstance();
         } catch (Exception e) {
-            MainClass.announceAll(String.format("Error loading CustomEvent:\n[%s]", e));
+            MainClass.debugLog(String.format("Error loading CustomEvent:\n[%s]", e));
         }
 
         if(ClassToRun == null) return;
@@ -62,7 +115,7 @@ public class CommandParser {
         }
 
         if(ClassToRun.run()){
-            getScheduler().scheduleSyncDelayedTask(p, revertClassToRun(ClassToRun, level), 600L);
+            getScheduler().scheduleSyncDelayedTask(p, revertClassToRun(ClassToRun, level), ClassToRun.delay());
         }
     }
 
@@ -76,7 +129,7 @@ public class CommandParser {
         };
     }
 
-    public void sendCommand(String command){
+    public static void sendCommand(String command){
         getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
     }
 

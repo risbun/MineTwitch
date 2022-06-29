@@ -22,6 +22,9 @@ public class YeetBlocks implements CustomEvent {
                 for (int x = -2; x < 3; x++) {
                     for (int z = -2; z < 3; z++) {
                         Block b = target.getLocation().add(x, (y * -1), z).getBlock();
+
+                        if(b.getType() == Material.AIR) continue;
+
                         FallingBlock fb = Objects.requireNonNull(b.getLocation().getWorld()).spawnFallingBlock(b.getLocation().subtract(new Vector(-0.5, 0, -0.5)), b.getBlockData());
 
                         b.setType(Material.AIR);

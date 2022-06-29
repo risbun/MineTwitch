@@ -12,5 +12,9 @@ public interface CustomEvent extends Listener {
     boolean run();
     default void revert() {}
     default void announceEnd() {}
+
+    default long delay() {
+        return 600L;
+    }
 }
 
