@@ -1,9 +1,10 @@
 package com.github.risbun.minetwitch;
 
-import com.github.risbun.minetwitch.classes.MinetwitchEvent;
-import com.github.risbun.minetwitch.commands.CommandMinetwitch;
-import com.github.risbun.minetwitch.commands.CommandTest;
+import com.github.risbun.minetwitch.commands.CMinetwitch;
+import com.github.risbun.minetwitch.commands.CTest;
 import com.github.twitch4j.TwitchClient;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
@@ -14,9 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,44 +23,41 @@ import java.util.*;
 import java.util.logging.Level;
 
 public class MainClass extends JavaPlugin implements Listener {
-    public static Scoreboard board;
-    public static List<String> globalVotes = new ArrayList<>();
-    public static List<String> votes = new ArrayList<>();
-    public static List<String> chosen = new ArrayList<>();
-    public static List<String> chosenActions = new ArrayList<>();
-    public static boolean votenow = false;
-    public static boolean enabled = false;
-    public static Plugin p = null;
-    public static TwitchClient twitchClient = null;
+    public static MainClass plugin = null;
+    public static Random rand;
+    public static int[] votes = new int[3];
+    public static List<EventContainer> chosen = new ArrayList<>();
     public static String prefix = ChatColor.DARK_GRAY + "§7[§fMine§5Twitch§7]§r";
+    public List<EventContainer> allEvents = new ArrayList<>();
 
-    public static FileConfiguration eventsConfig;
+    public ClassLoader classLoader;
+    private BukkitAudiences adventure;
+    public static FileConfiguration config;
 
-    public static ClassLoader classLoader;
-
-    public static List<MinetwitchEvent> allEvents = new ArrayList<>();
+    protected final CMinetwitch cMinetwitch = new CMinetwitch();
 
     @Override
     public void onEnable() {
-        p = this;
+        adventure = BukkitAudiences.create(this);
+        plugin = this;
         classLoader = this.getClassLoader();
 
         announceAll(prefix + " Type /mt to start MineTwitch.\n\nFirst time? Go to /plugins/MineTwitch/config.yml and setup the plugin");
 
-        Objects.requireNonNull(this.getCommand("minetwitch")).setExecutor(new CommandMinetwitch());
-        Objects.requireNonNull(this.getCommand("Test")).setExecutor(new CommandTest());
+        Objects.requireNonNull(this.getCommand("minetwitch")).setExecutor(cMinetwitch);
+        Objects.requireNonNull(this.getCommand("test")).setExecutor(new CTest());
 
         this.saveDefaultConfig();
 
         CreateCommandJSON();
 
-        Iterator<String> keys = eventsConfig.getKeys(false).iterator();
-        Map<String, Object> values = eventsConfig.getValues(false);
+        Iterator<String> keys = config.getKeys(false).iterator();
+        Map<String, Object> values = config.getValues(false);
 
         while(keys.hasNext()) {
             String s = keys.next();
 
-            allEvents.add(new MinetwitchEvent(s, (String) values.get(s)));
+            allEvents.add(new EventContainer(s, (String) values.get(s)));
         }
     }
 
@@ -69,22 +65,15 @@ public class MainClass extends JavaPlugin implements Listener {
     public void onDisable() {
         List<String> channels = this.getConfig().getStringList("bot.channels");
         for (String chl : channels) {
-            twitchClient.getChat().leaveChannel(chl);
+            TwitchBot.client.getChat().leaveChannel(chl);
         }
-        twitchClient.close();
-        disable();
-    }
+        TwitchBot.client.close();
+        cMinetwitch.Disable();
 
-    public static void disable() {
-        for (Team team : board.getTeams()) {
-            team.unregister();
+        if(adventure != null) {
+            adventure.close();
+            adventure = null;
         }
-        if (board.getObjective("minetwitch") != null) {
-            Objects.requireNonNull(board.getObjective("minetwitch")).unregister();
-        }
-
-        Bukkit.getScheduler().cancelTasks(p);
-        announceAll(prefix + " Disabled");
     }
 
     private void CreateCommandJSON() {
@@ -94,10 +83,10 @@ public class MainClass extends JavaPlugin implements Listener {
             saveResource("eventsConfig.json", false);
         }
 
-        eventsConfig = new YamlConfiguration();
+        config = new YamlConfiguration();
 
         try {
-            eventsConfig.load(eventsFile);
+            config.load(eventsFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -128,22 +117,24 @@ public class MainClass extends JavaPlugin implements Listener {
         announceAll(Component.text(message));
     }
 
-    public static void announceAll(Component message){
-        p.getServer().getLogger().log(Level.INFO, ((TextComponent) message).content());
+    public static void announceAll(TextComponent message){
+        plugin.getServer().getLogger().log(Level.INFO, message.content());
         for(Player p : Bukkit.getOnlinePlayers()){
-            p.sendMessage(message);
+            Audience a = plugin.adventure.player(p);
+            a.sendMessage(message);
         }
     }
 
     public static void debugLog(String message){
-        announceAll(Component.text(message));
+        debugLog(Component.text(message));
     }
 
     public static void debugLog(Component message){
-        p.getServer().getLogger().log(Level.INFO, ((TextComponent) message).content());
+        plugin.getServer().getLogger().log(Level.INFO, ((TextComponent) message).content());
         for(Player p : Bukkit.getOnlinePlayers()){
             if(!p.isOp()) continue;
-            p.sendMessage(message);
+            Audience a = plugin.adventure.player(p);
+            a.sendMessage(message);
         }
     }
 }
