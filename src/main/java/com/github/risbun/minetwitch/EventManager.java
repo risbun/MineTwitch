@@ -91,24 +91,24 @@ public class EventManager {
     }
 
     public static void runCustom(String c) {
-        CustomEvent ClassToRun = null;
+        CustomEvent classToRun = null;
         try {
-            ClassToRun = plugin.classLoader
+            classToRun = plugin.classLoader
                     .loadClass("com.github.risbun.minetwitch.customevents." + c)
                     .asSubclass(CustomEvent.class).getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             MainClass.debugLog(String.format("Error loading CustomEvent:\n[%s]", e));
         }
 
-        if(ClassToRun == null) return;
+        if(classToRun == null) return;
 
-        if(ClassToRun.run()){
-            getScheduler().scheduleSyncDelayedTask(plugin, revertClassToRun(ClassToRun), ClassToRun.delay());
+        if(classToRun.run()){
+            getScheduler().scheduleSyncDelayedTask(plugin, revertClassToRun(classToRun), classToRun.delay());
         }
     }
 
-    private static @NotNull Runnable revertClassToRun(CustomEvent ClassToRun){
-        return ClassToRun::revert;
+    private static @NotNull Runnable revertClassToRun(CustomEvent classToRun){
+        return classToRun::revert;
     }
 
     public static void sendCommand(String command){

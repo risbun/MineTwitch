@@ -6,6 +6,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class ApacheHelicopter implements CustomEvent {
     @Override
@@ -16,7 +18,7 @@ public class ApacheHelicopter implements CustomEvent {
 
             Bat bat = w.spawn(p.getLocation(), Bat.class);
             Skeleton skeleton = w.spawn(p.getLocation(), Skeleton.class);
-            skeleton.setShouldBurnInDay(false);
+            skeleton.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 120,0, true, false));
 
             bat.addPassenger(skeleton);
         }

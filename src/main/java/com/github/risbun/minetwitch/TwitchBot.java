@@ -6,7 +6,7 @@ import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,21 @@ public class TwitchBot {
     public static TwitchClient client;
     private static final List<String> globalVotes = new ArrayList<>();
 
-    public static void load(){
+    public TwitchBot(){
+        TwitchClientBuilder clientBuilder = TwitchClientBuilder.builder();
+
+        OAuth2Credential credential = new OAuth2Credential(
+                "twitch",
+                config.getString("bot.oauth")
+        );
+
+        client = clientBuilder
+                .withEnableHelix(true)
+                .withChatAccount(credential)
+                .withEnableChat(true)
+                .build();
+
+        /*
         TwitchBot s = new TwitchBot();
 
         String oauthString = Objects.requireNonNull(config.getString("bot.oauth"));
@@ -31,16 +45,16 @@ public class TwitchBot {
                 .withEnableChat(true)
                 .build();
 
-        s.run(client);
+        s.run(client);*/
     }
 
-    private void run(TwitchClient twitchClient){
+    protected void run(){
         List<String> channels = config.getStringList("bot.channels");
         for (String chl : channels) {
-            twitchClient.getChat().joinChannel(chl);
+            client.getChat().joinChannel(chl);
         }
 
-        EventManager eventManager = twitchClient.getEventManager();
+        EventManager eventManager = client.getEventManager();
         eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, this::onMessage);
     }
 
@@ -64,7 +78,7 @@ public class TwitchBot {
                 votes[vote] += 1;
 
                 if (!config.getBoolean("ingame.hide")) {
-                    plugin.cMinetwitch.update(vote, votes[vote]);
+                    plugin.cMinetwitch.UpdateScoreboard(vote, votes[vote]);
                 }
 
                 globalVotes.add(event.getUser().getId());
@@ -87,6 +101,8 @@ public class TwitchBot {
     }
 
     public static void send(String text) {
+        if(client == null) return;
+
         List<String> channels = config.getStringList("bot.channels");
         for (String chl : channels) {
             client.getChat().sendMessage(chl, text);

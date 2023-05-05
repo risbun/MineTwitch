@@ -2,8 +2,6 @@ package com.github.risbun.minetwitch.customevents;
 
 import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.CustomEvent;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -28,7 +26,7 @@ public class PumpkinOnHead implements CustomEvent {
 
             ItemMeta meta = helmet.getItemMeta();
 
-            meta.lore(Collections.singletonList(Component.text(helmet.getType().toString())));
+            meta.setLore(Collections.singletonList(helmet.getType().toString()));
             helmet.setItemMeta(meta);
 
             helmet.setType(Material.CARVED_PUMPKIN);
@@ -44,9 +42,9 @@ public class PumpkinOnHead implements CustomEvent {
             PlayerInventory iv = p.getInventory();
             ItemStack helmet = iv.getHelmet();
 
-            if(helmet == null || helmet.lore() == null) return;
+            if(helmet == null || helmet.getLore() == null) return;
 
-            Material type = Material.matchMaterial(((TextComponent) helmet.lore().get(0)).content());
+            Material type = Material.matchMaterial(helmet.getLore().get(0));
 
             if(type == null) return;
 

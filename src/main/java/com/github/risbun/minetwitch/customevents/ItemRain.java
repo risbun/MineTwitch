@@ -2,10 +2,8 @@ package com.github.risbun.minetwitch.customevents;
 
 import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.CustomEvent;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,9 +25,7 @@ public class ItemRain implements CustomEvent {
 
     @Override
     public boolean run() {
-        TextComponent comp = Component.text("Items have started falling from the sky!")
-                .color(TextColor.color(0, 255, 0));
-        MainClass.announceAll(comp);
+        MainClass.announceAll(ChatColor.GREEN + "Items have started falling from the sky!");
 
         items = new ArrayList<>();
         for(Material mat : Material.values()){
@@ -39,8 +35,8 @@ public class ItemRain implements CustomEvent {
         taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             for(Player p : MainClass.getPlayers()){
                 Location l = p.getLocation();
-                l.setY(255);
-                l.add((random.nextFloat() * offset) - offset / 2, 0, (random.nextFloat() * offset) - offset / 2);
+
+                l.add((random.nextFloat() * offset) - offset / 2, 10, (random.nextFloat() * offset) - offset / 2);
 
                 ItemStack item = new ItemStack(items.get(random.nextInt(items.size())));
                 p.getWorld().dropItem(l, item);
@@ -52,9 +48,7 @@ public class ItemRain implements CustomEvent {
 
     @Override
     public void revert() {
-        TextComponent comp = Component.text("Items have stopped falling from the sky!")
-                .color(TextColor.color(255, 0, 0));
-        MainClass.announceAll(comp);
+        MainClass.announceAll(ChatColor.DARK_RED + "Items have stopped falling from the sky!");
 
         Bukkit.getScheduler().cancelTask(taskIndex);
     }

@@ -10,6 +10,7 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 
 import static com.github.risbun.minetwitch.MainClass.plugin;
+import static com.github.risbun.minetwitch.MainClass.rand;
 
 public class Lag implements CustomEvent {
 
@@ -23,6 +24,8 @@ public class Lag implements CustomEvent {
 
         taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             for(Player p : playerLocation.keySet()){
+                if(rand.nextInt(5) != 4) continue;
+
                 Location oldPLocation = playerLocation.get(p);
                 Location pLocation = p.getLocation();
 
@@ -39,7 +42,7 @@ public class Lag implements CustomEvent {
             for(Player p : MainClass.getPlayers()){
                 playerLocation.put(p, p.getLocation());
             }
-        }, 0L, 20L);
+        }, 0L, 5L);
 
         return true;
     }

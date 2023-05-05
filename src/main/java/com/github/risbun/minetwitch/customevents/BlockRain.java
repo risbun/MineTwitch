@@ -32,13 +32,12 @@ public class BlockRain implements CustomEvent {
         taskIndex = Bukkit.getScheduler().scheduleSyncRepeatingTask(MainClass.plugin, () -> {
             for(Player p : MainClass.getPlayers()){
                 Block b = p.getLocation().getBlock();
-                Location summon = b.getLocation();
-                summon.setY(255);
-                summon.add((random.nextFloat() * offset) - offset / 2, 0, (random.nextFloat() * offset) - offset / 2);
-                summon.add(new Vector(0.5f, 0, 0.5f));
+                Location l = b.getLocation();
+                l.add((random.nextFloat() * offset) - offset / 2, 0, (random.nextFloat() * offset) - offset / 2);
+                l.add(new Vector(0.5f, 20, 0.5f));
 
                 Material mat = blocks.get(random.nextInt(blocks.size()));
-                p.getWorld().spawnFallingBlock(summon, mat.createBlockData());
+                p.getWorld().spawnFallingBlock(l, mat.createBlockData());
             }
         }, 0L, 2L);
 

@@ -1,18 +1,14 @@
 package com.github.risbun.minetwitch.commands;
 
-import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.risbun.minetwitch.TwitchBot;
 import com.github.risbun.minetwitch.MainClass;
 import com.github.risbun.minetwitch.EventContainer;
 import com.github.risbun.minetwitch.EventManager;
-import com.github.twitch4j.TwitchClientBuilder;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -30,21 +26,8 @@ public class CMinetwitch implements CommandExecutor {
     private Scoreboard board;
     private Objective obj;
     private boolean hidden;
-
     public static boolean voteActive = false;
     public static boolean enabled = false;
-
-    public void Disable() {
-        for (Team team : board.getTeams()) {
-            team.unregister();
-        }
-        if (board.getObjective("minetwitch") != null) {
-            Objects.requireNonNull(board.getObjective("minetwitch")).unregister();
-        }
-
-        Bukkit.getScheduler().cancelTasks(plugin);
-        MainClass.announceAll(prefix + " Disabled");
-    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -69,6 +52,12 @@ public class CMinetwitch implements CommandExecutor {
         int voteTime = config.getInt("vote.time");
         hidden = config.getBoolean("ingame.hide");
 
+        if (oauthString.equals("oauth:xxxx")) {
+            MainClass.announceAll(prefix + " OAuth in config not set, follow getting started on this page: https://risbun.github.io/MineTwitch/");
+            enabled = false;
+            return true;
+        }
+
         if(!hidden){
             board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard();
             obj = board.registerNewObjective("minetwitch", "", prefix);
@@ -76,15 +65,9 @@ public class CMinetwitch implements CommandExecutor {
             for (int i = 1; i < 4; i++) {
                 Team t = board.registerNewTeam(i + ". ");
                 t.addEntry(i + ". ");
-                t.suffix(Component.text("Loading..."));
+                t.setSuffix("Loading...");
                 obj.getScore(i + ". ").setScore(0);
             }
-        }
-
-        if (oauthString.equals("oauth:xxxx")) {
-            MainClass.announceAll(prefix + " OAuth in config not set, follow getting started on this page: https://risbun.github.io/MineTwitch/");
-            enabled = false;
-            return true;
         }
 
         Runnable results = () -> {
@@ -97,9 +80,8 @@ public class CMinetwitch implements CommandExecutor {
 
         Runnable voting = () -> {
             TwitchBot.send("Start voting now!");
-            voteActive = true;
-
             TwitchBot.ClearList();
+            voteActive = true;
 
             votes = new int[3];
             chosen.clear();
@@ -117,13 +99,13 @@ public class CMinetwitch implements CommandExecutor {
                 if (hidden) {
                     TwitchBot.send((i + 1) + ". " + chosen.get(i));
                 } else {
-                    update(i, 0);
+                    UpdateScoreboard(i, 0);
                 }
             }
 
             if (!hidden) {
                 for (Team team : board.getTeams()) {
-                    team.suffix(Component.text(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1).getKey()));
+                    team.setSuffix(chosen.get(Integer.parseInt(team.getName().substring(0, 1)) - 1).getKey());
                 }
             }
 
@@ -156,8 +138,21 @@ public class CMinetwitch implements CommandExecutor {
         return rand.nextInt(currentWinning.size());
     }
 
-    public void update(int n, int val){
-        n++;
-        obj.getScore(n + ". ").setScore(val);
+    public void UpdateScoreboard(int s, int val){
+        obj.getScore(++s + ". ").setScore(val);
+    }
+
+    public void Disable() {
+        Bukkit.getScheduler().cancelTasks(plugin);
+        MainClass.announceAll(prefix + " Disabled");
+
+        if(board == null) return;
+
+        for (Team team : board.getTeams()) {
+            team.unregister();
+        }
+        if(board.getObjective("minetwitch") == null) return;
+
+        Objects.requireNonNull(board.getObjective("minetwitch")).unregister();
     }
 }
